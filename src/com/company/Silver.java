@@ -1,5 +1,8 @@
 package com.company;
 
 public class Silver extends Flight {
-    //falta la implementacion de catering
+    public Silver(double capacidadCombustible, double costoKm, int cantPasajeros, double velocidadMax, String tipoPropulsion) {
+        super(capacidadCombustible, costoKm, cantPasajeros, velocidadMax, tipoPropulsion);
+    }
+//falta la implementacion de catering
 }

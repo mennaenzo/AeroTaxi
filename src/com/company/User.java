@@ -9,6 +9,4 @@ public class User {
     private String mejorCateoria;
     private ArrayList<Journey> vuelosPendientes;
 
-
-
 }
