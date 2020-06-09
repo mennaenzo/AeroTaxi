@@ -1,17 +1,17 @@
 package com.company;
 
-public class Flight {
-    private double capacidadCombustible;
-    private double costoKm;
-    private int cantPasajeros;
-    private double velocidadMax;
-    private String tipoPropulsion;
+import java.util.Date;
 
-    public Flight(double capacidadCombustible, double costoKm, int cantPasajeros, double velocidadMax, String tipoPropulsion) {
-        this.capacidadCombustible = capacidadCombustible;
-        this.costoKm = costoKm;
-        this.cantPasajeros = cantPasajeros;
-        this.velocidadMax = velocidadMax;
-        this.tipoPropulsion = tipoPropulsion;
+public class Flight {
+    private Date date;
+    private String from;
+    private String to;
+    private int passengers;
+
+    public Flight(Date date, String from, String to, int passengers) {
+        this.date = date;
+        this.from = from;
+        this.to = to;
+        this.passengers = passengers;
     }
 }

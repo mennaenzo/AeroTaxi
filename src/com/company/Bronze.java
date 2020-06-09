@@ -1,7 +1,7 @@
 package com.company;
 
-public class Bronze extends Flight {
-    public Bronze(double capacidadCombustible, double costoKm, int cantPasajeros, double velocidadMax, String tipoPropulsion) {
-        super(capacidadCombustible, costoKm, cantPasajeros, velocidadMax, tipoPropulsion);
+public class Bronze extends Plane {
+    public Bronze(double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
+        super(fuel, pricePerKm, passengers, speed, propulsion);
     }
 }

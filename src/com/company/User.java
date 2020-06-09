@@ -2,11 +2,10 @@ package com.company;
 import java.util.ArrayList;
 
 public class User {
-    private String nombre;
-    private String apellido;
+    private String name;
+    private String surname;
     private int dni;
-    private int edad;
-    private String mejorCateoria;
-    private ArrayList<Journey> vuelosPendientes;
-
+    private int age;
+    private String bestCategory;
+    private ArrayList<Journey> trips;
 }

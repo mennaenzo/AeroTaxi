@@ -1,8 +1,12 @@
 package com.company;
 
-public class Gold extends Flight  {
-    public Gold(double capacidadCombustible, double costoKm, int cantPasajeros, double velocidadMax, String tipoPropulsion) {
-        super(capacidadCombustible, costoKm, cantPasajeros, velocidadMax, tipoPropulsion);
+public class Gold extends Plane implements WifiConnection{
+    public Gold(double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
+        super(fuel, pricePerKm, passengers, speed, propulsion);
     }
-//falta la implementacion de catering y wifi
+
+    @Override
+    public boolean connectionWifi() {
+        return true;
+    }
 }

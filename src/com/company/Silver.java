@@ -1,8 +1,12 @@
 package com.company;
 
-public class Silver extends Flight {
-    public Silver(double capacidadCombustible, double costoKm, int cantPasajeros, double velocidadMax, String tipoPropulsion) {
-        super(capacidadCombustible, costoKm, cantPasajeros, velocidadMax, tipoPropulsion);
+public class Silver extends Plane implements WifiConnection{
+    public Silver(double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
+        super(fuel, pricePerKm, passengers, speed, propulsion);
     }
-//falta la implementacion de catering
+
+    @Override
+    public boolean connectionWifi() {
+        return true;
+    }
 }
