@@ -1,20 +1,46 @@
 package com.company;
-import java.util.Date;
+import java.io.Serializable;
 import java.lang.String;
 
-public class Plane {
+public class Plane implements Serializable {
+    private String model;
     private double fuel;
     private double pricePerKm;
     private int passengers;
     private double speed;
     private String propulsion;
 
-    public Plane(double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
+    public Plane(String model, double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
+        this.model = model;
         this.fuel = fuel;
         this.pricePerKm = pricePerKm;
         this.passengers = passengers;
         this.speed = speed;
         this.propulsion = propulsion;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public double getFuel() {
+        return fuel;
+    }
+
+    public double getPricePerKm() {
+        return pricePerKm;
+    }
+
+    public int getPassengers() {
+        return passengers;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public String getPropulsion() {
+        return propulsion;
     }
 
     // Validacion de las ciudades que se elijen

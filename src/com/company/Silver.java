@@ -1,12 +1,14 @@
 package com.company;
 
-public class Silver extends Plane implements WifiConnection{
-    public Silver(double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
-        super(fuel, pricePerKm, passengers, speed, propulsion);
+import java.io.Serializable;
+
+public class Silver extends Plane implements CateringService, Serializable {
+    public Silver(String model, double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
+        super(model, fuel, pricePerKm, passengers, speed, propulsion);
     }
 
     @Override
-    public boolean connectionWifi() {
+    public boolean service() {
         return true;
     }
 }
