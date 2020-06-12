@@ -1,4 +1,6 @@
-package com.company;
+package com.company.enterprise;
+import com.company.enums.Journey;
+
 import java.util.ArrayList;
 
 public class User {

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.enums;
 
 public enum Journey {
     BSAS_CDB("Buenos Aires","Cordoba",695),

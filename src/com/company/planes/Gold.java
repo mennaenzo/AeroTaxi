@@ -1,4 +1,4 @@
-package com.company;
+package com.company.planes;
 
 import com.company.interfaces.CateringService;
 import com.company.interfaces.WifiConnection;
