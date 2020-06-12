@@ -1,4 +1,4 @@
 # Default ignored files
 /AeroTaxi.iml
 /.idea
-*.class
+/out/
