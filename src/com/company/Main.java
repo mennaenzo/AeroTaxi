@@ -3,6 +3,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,19 +12,23 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String path = "C:\\Users\\menna\\Desktop\\AeroTaxi\\files\\planes.json";
-        File planes = new File(path);
+        Storage.createFiles("files\\planes.json");
+        Storage.createFiles("files\\users.json");
+        Storage.createFiles("files\\flights.json");
+
         Plane airbus = new Plane("Airbus A340",155040,300,214,914,"reaction");
         Plane airbus1 = new Plane("Airbus A341",155041,301,215,915,"reaction1");
 
-        if(planes.exists()){
+
+
+        /*if(planes.exists()){
             try{
-                Map<String,Plane> planeMap = new HashMap<>();
-                planeMap.put("Airbus 1",airbus);
-                planeMap.put("Airbus 2",airbus1);
+                ArrayList<Plane> planeList = new ArrayList<>();
+                planeList.add(airbus);
+                planeList.add(airbus1);
 
                 ObjectMapper mapper = new ObjectMapper();
-                mapper.writeValue(planes,planeMap);
+                mapper.writeValue(planes,planeList);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -36,14 +41,6 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-//        boolean res;
-//        Plane vuelo = new Plane(null, "BSAS", "CORDOBA", 2);
-//        res=vuelo.validarCiudad("BSS","BSS");
-//        System.out.println(res);
-//        for (City c: City.values()) {
-//        System.out.println(c.toString());
-//        }
+        }*/
     }
 }

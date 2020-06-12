@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.interfaces.CateringService;
+
 import java.io.Serializable;
 
 public class Silver extends Plane implements CateringService, Serializable {

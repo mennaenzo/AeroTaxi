@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.interfaces.CateringService;
+import com.company.interfaces.WifiConnection;
+
 import java.io.Serializable;
 
 public class Gold extends Plane implements WifiConnection, CateringService, Serializable {

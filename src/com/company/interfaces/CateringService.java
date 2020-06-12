@@ -1,4 +1,4 @@
-package com.company;
+package com.company.interfaces;
 
 public interface CateringService {
      boolean service();
