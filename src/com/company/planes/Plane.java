@@ -43,6 +43,10 @@ public class Plane implements Serializable {
         return propulsion;
     }
 
+    public double getRate(){
+        return 0;
+    }
+
     // Validacion de las ciudades que se elijen
     /*public boolean validarCiudad(String origen, String destino) {
         boolean validacion = false;

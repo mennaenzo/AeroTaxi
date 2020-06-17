@@ -13,4 +13,9 @@ public class Silver extends Plane implements CateringService, Serializable {
     public boolean service() {
         return true;
     }
+
+    @Override
+    public double getRate() {
+        return 4000;
+    }
 }

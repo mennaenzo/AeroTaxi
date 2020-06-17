@@ -29,4 +29,23 @@ public enum Journey {
     public double getDistance() {
         return distance;
     }
+
+    /*public Journey compare(String origin, String destination){
+        switch (origin) {
+            case City.BSAS:
+
+                break;
+            case City.SANTIAGO:
+
+                break;
+            case City.MONTEVIDEO:
+
+                break;
+            case City.CORDOBA:
+
+                break;
+        }
+
+    }*/
+
 }

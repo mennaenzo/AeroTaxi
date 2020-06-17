@@ -1,6 +1,7 @@
 package com.company;
 import com.company.enterprise.User;
 import com.company.enterprise.UserMenu;
+import com.company.enums.City;
 import com.company.enums.FilePath;
 import com.company.fileManagement.FileFlight;
 import com.company.fileManagement.FilePlane;
@@ -13,13 +14,23 @@ import com.company.planes.Silver;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        Date date = new Date(2020,05,10,12,50);
+        SimpleDateFormat simpleDate = new SimpleDateFormat();
+        System.out.println(simpleDate.format(date));
+        Plane planeGold = new Gold("King Air 250", 1653, 301, 10, 574, "helice");
+        System.out.println(planeGold.getRate());
+
+
+            /*
             FilePlane filePlane = new FilePlane();
             FileUser fileUsers = new FileUser();
             FileFlight fileFlight = new FileFlight();
@@ -54,12 +65,13 @@ public class Main {
             FileUser fileUser=new FileUser();
             fileUser.writeFileUser(userList,FilePath.USERS.getPathname());
             //planeListSave = Storage.readFile(FilePath.PLANES.getPathname()); // Devuelve un ArrayList de lo que ay en el archivo
-        }
 
+             */
     }
+}
                  // intento fallido
-       //ArrayList<Plane> planeList = FilePlane.readFilePlane();
-       // System.out.println(planeList.size());
+        //ArrayList<Plane> planeList = FilePlane.readFilePlane();
+        // System.out.println(planeList.size());
 
         /*if(planes.exists()){
             try{

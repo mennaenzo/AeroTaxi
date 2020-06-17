@@ -19,4 +19,11 @@ public class Gold extends Plane implements WifiConnection, CateringService, Seri
     public boolean service() {
         return false;
     }
+
+    @Override
+    public double getRate() {
+        return 6000;
+    }
+
+
 }
