@@ -8,9 +8,9 @@ public enum Journey {
     CBD_STG("Cordoba","Santiago", 1050),
     MTV_STG("Montevideo","Santiago",2100);
 
-    private String origin;
-    private String destination;
-    private double distance;
+    private final String origin;
+    private final String destination;
+    private final double distance;
 
     Journey(String origin, String destination, double distance) {
         this.origin = origin;

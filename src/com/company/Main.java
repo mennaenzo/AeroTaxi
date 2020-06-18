@@ -23,14 +23,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Date date = new Date(2020,05,10,12,50);
+        /*Date date = new Date(2020,05,10,12,50);
         SimpleDateFormat simpleDate = new SimpleDateFormat();
         System.out.println(simpleDate.format(date));
         Plane planeGold = new Gold("King Air 250", 1653, 301, 10, 574, "helice");
-        System.out.println(planeGold.getRate());
+        System.out.println(planeGold.getRate());*/
 
 
-            /*
+
+/*
             FilePlane filePlane = new FilePlane();
             FileUser fileUsers = new FileUser();
             FileFlight fileFlight = new FileFlight();
@@ -58,15 +59,15 @@ public class Main {
             filePlane.writeFilePlane(planeListSave, FilePath.PLANES.getPathname());
 
             User enzo = new User("Enzo","Menna",39341231,26);
-            User martin = new User("Martin","omez Vega",41429427,21);
+            User martin = new User("Martin","Gomez Vega",41429427,21);
             ArrayList<User> userList = new ArrayList<>();
             userList.add(enzo);
             userList.add(martin);
             FileUser fileUser=new FileUser();
             fileUser.writeFileUser(userList,FilePath.USERS.getPathname());
             //planeListSave = Storage.readFile(FilePath.PLANES.getPathname()); // Devuelve un ArrayList de lo que ay en el archivo
+*/
 
-             */
     }
 }
                  // intento fallido

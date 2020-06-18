@@ -8,15 +8,15 @@ public class User {
     private int dni;
     private int age;
     private String bestCategory;
-    private ArrayList<Flight> trips;
+    private final ArrayList<Flight> trips;
 
     public User(String name, String surname, int dni, int age) {
         this.name = name;
         this.surname = surname;
         this.dni = dni;
         this.age = age;
-        this.bestCategory = null;
-        this.trips = null;
+        bestCategory = null;
+        trips = new ArrayList<>();
     }
 
     public String getName() {

@@ -10,10 +10,18 @@ public class UserMenu {
     }
 
     public Flight confirmFligth(Date date, Journey journey, Plane plane, User user, int passengers){
-        double cost = ((journey.getDistance() * plane.getPricePerKm()) + (passengers * 3500) + plane.getRate());
-        Flight flight = new Flight(date, journey, plane, user, passengers, cost);
+        Flight flight = new Flight(date, journey, plane, user, passengers, getCost(journey, plane, passengers));
         user.addTrips(flight);
-        user.setBestCategory(plane.getClass().getSimpleName());
+        String categoryPlane = plane.getClass().getSimpleName();
+        String bestCategory = user.getBestCategory();
+
+        if(bestCategory.isBlank()) {
+            user.setBestCategory(categoryPlane);
+        }
+        else if(checkCategory(user, categoryPlane)){
+            user.setBestCategory(categoryPlane);
+        }
+
         return flight;
     }
 
@@ -28,5 +36,20 @@ public class UserMenu {
             return true;
     }
 
+    public double getCost(Journey journey, Plane plane, int passengers){
+        return ((journey.getDistance() * plane.getPricePerKm()) + (passengers * 3500) + plane.getRate());
+    }
+
+    public boolean checkCategory(User user, String category){
+        String bestCategory = user.getBestCategory();
+
+        if (bestCategory.equals("Bronze")) {
+            return !category.equals("Bronze");
+        }
+        else if (bestCategory.equals("Silver")) {
+            return category.equals("Gold");
+        }
+        return false;
+    }
 
 }
