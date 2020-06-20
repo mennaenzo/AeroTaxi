@@ -4,18 +4,18 @@ import com.company.enums.Journey;
 import com.company.planes.Plane;
 import java.util.Date;
 
-public abstract class UserMenu {
+public class UserMenu {
 
     public UserMenu() {
     }
 
-    public static Flight confirmFligth(Date date, Journey journey, Plane plane, User user, int passengers){
+    public Flight confirmFligth(Date date, Journey journey, Plane plane, User user, int passengers){
         Flight flight = new Flight(date, journey, plane, user, passengers, getCost(journey, plane, passengers));
         user.addTrips(flight);
         String categoryPlane = plane.getClass().getSimpleName();
         String bestCategory = user.getBestCategory();
 
-        if(bestCategory.isBlank()) {
+        if(bestCategory.isEmpty()) {
             user.setBestCategory(categoryPlane);
         }
         else if(checkCategory(user, categoryPlane)){
@@ -25,11 +25,11 @@ public abstract class UserMenu {
         return flight;
     }
 
-    public static double getCost(Journey journey, Plane plane, int passengers){
+    public double getCost(Journey journey, Plane plane, int passengers){
         return ((journey.getDistance() * plane.getPricePerKm()) + (passengers * 3500) + plane.getRate());
     }
 
-    private static boolean checkCategory(User user, String category){
+    private boolean checkCategory(User user, String category){
         String bestCategory = user.getBestCategory();
 
         if (bestCategory.equals("Bronze")) {

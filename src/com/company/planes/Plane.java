@@ -7,6 +7,19 @@ public class Plane implements Serializable {
     private double fuel;
     private double pricePerKm;
     private int passengers;
+
+    @Override
+    public String toString() {
+        return "Plane{" +
+                "model='" + model + '\'' +
+                ", fuel=" + fuel +
+                ", pricePerKm=" + pricePerKm +
+                ", passengers=" + passengers +
+                ", speed=" + speed +
+                ", propulsion='" + propulsion + '\'' +
+                '}';
+    }
+
     private double speed;
     private String propulsion;
 

@@ -237,4 +237,26 @@ public class SystemAero {
         return 0;
     }
 
+    public Plane planeAvailable(Date date, int maxPassengers){
+        int i = 1;
+        if(available.containsKey(date)) {
+            ArrayList<Plane> listPlaneAvailable = available.get(date);
+            for (Plane plane: listPlaneAvailable){
+                System.out.println("Opcion: " + i);
+                i++;
+                System.out.println(plane.toString());
+                System.out.println("\n");
+            }
+            System.out.println("Plase choose the plane where you want to travel");
+            Scanner scanner = new Scanner(System.in);
+            int opcion = scanner.nextInt();
+            if(opcion <= listPlaneAvailable.size()+1){
+                return listPlaneAvailable.get(opcion),
+            }
+            else
+                return null;
+        }
+    }
+
+
 }
