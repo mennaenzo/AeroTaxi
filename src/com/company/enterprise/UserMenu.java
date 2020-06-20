@@ -25,22 +25,11 @@ public class UserMenu {
         return flight;
     }
 
-    /*public Journey confirmJourney(String origin, String destination){
-
-    }*/
-
-    public boolean maxPassengers(int passengers, int max){
-        if(passengers > max)
-            return false;
-        else
-            return true;
-    }
-
     public double getCost(Journey journey, Plane plane, int passengers){
         return ((journey.getDistance() * plane.getPricePerKm()) + (passengers * 3500) + plane.getRate());
     }
 
-    public boolean checkCategory(User user, String category){
+    private boolean checkCategory(User user, String category){
         String bestCategory = user.getBestCategory();
 
         if (bestCategory.equals("Bronze")) {

@@ -14,22 +14,31 @@ import com.company.planes.Silver;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        /*Date date = new Date(2020,05,10,12,50);
+        Date date = new Date(2020,05,10,12,50);
         SimpleDateFormat simpleDate = new SimpleDateFormat();
         System.out.println(simpleDate.format(date));
         Plane planeGold = new Gold("King Air 250", 1653, 301, 10, 574, "helice");
-        System.out.println(planeGold.getRate());*/
+        System.out.println(planeGold.getRate());
+        Scanner scanner = new Scanner(System.in);
+        String dates = scanner.nextLine();
+        try {
+            date = simpleDate.parse(dates);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-
+        System.out.println(date);
 
 /*
             FilePlane filePlane = new FilePlane();

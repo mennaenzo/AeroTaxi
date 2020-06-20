@@ -1,7 +1,7 @@
 package com.company.enums;
 
 public enum City {
-    BSAS, SANTIAGO, CORDOBA, MONTEVIDEO
+    BSAS, STG, CDB, MTV
 }
 
 

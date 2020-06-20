@@ -8,6 +8,7 @@ public class User {
     private int dni;
     private int age;
     private String bestCategory;
+    private final ArrayList<Flight> checkIn;
     private final ArrayList<Flight> trips;
 
     public User(String name, String surname, int dni, int age) {
@@ -16,6 +17,7 @@ public class User {
         this.dni = dni;
         this.age = age;
         bestCategory = null;
+        checkIn = new ArrayList<>();
         trips = new ArrayList<>();
     }
 
@@ -61,6 +63,10 @@ public class User {
 
     public ArrayList<Flight> getTrips() {
         return trips;
+    }
+
+    public void addCheckIn(Flight flight) {
+        checkIn.add(flight);
     }
 
     public void addTrips(Flight flight) {
