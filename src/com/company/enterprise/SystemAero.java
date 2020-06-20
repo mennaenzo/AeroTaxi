@@ -250,7 +250,7 @@ public class SystemAero {
                 System.out.println(plane.toString());
                 System.out.println("\n");
             }
-            System.out.println("Plase choose the plane where you want to travel");
+            System.out.println("Plase choose the plane where you want to travel:");
             Scanner scanner = new Scanner(System.in);
             int opcion = scanner.nextInt();
             if(opcion <= listPlaneAvailable.size()+1){
