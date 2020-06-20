@@ -1,20 +1,13 @@
 package com.company.fileManagement;
 
-import com.company.enums.FilePath;
 import com.company.planes.Plane;
 import com.google.gson.*;
-import com.google.gson.internal.$Gson$Preconditions;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
 import java.io.*;
 
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.jar.JarOutputStream;
 
 public class FilePlane extends Storage{
 
@@ -22,9 +15,8 @@ public class FilePlane extends Storage{
     }
 
     // Escribe en un archivo un ArrayList
-    public void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
-        FilePlane filePlane = new FilePlane();
-        ArrayList<Plane> completeList = (filePlane.readFilePlane(pathname)); //Lee el archivo antes de escribir, para no sobreecribirlo.
+    public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
+        ArrayList<Plane> completeList = (FilePlane.readFilePlane(pathname));
         completeList.addAll(xSave);
         BufferedWriter bWriter= null;
         try {
@@ -49,7 +41,7 @@ public class FilePlane extends Storage{
     }
 
     // A partir de una ruta, lee un archivo.
-    public ArrayList readFilePlane(String pathname) {
+    public static ArrayList<Plane> readFilePlane(String pathname) {
         ArrayList<Plane> list = new ArrayList<>();
         BufferedReader bReader = null;
         File file = new File(pathname);
@@ -81,8 +73,8 @@ public class FilePlane extends Storage{
     }
 
     @Override
-    public void createFiles(String pathname) {
-        super.createFiles(pathname);
+    public boolean createFile(String pathname) {
+        return super.createFile(pathname);
     }
 
     @Override

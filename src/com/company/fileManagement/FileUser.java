@@ -13,9 +13,8 @@ public class FileUser extends Storage {
     public FileUser() {
     }
 
-    public void writeFileUser(ArrayList<User> xSave, String pathname) {
-        FileUser fileUsers = new FileUser();
-        ArrayList<User> completeList = (fileUsers.readFileUser(pathname)); //Lee el archivo antes de escribir, para no sobreecribirlo.
+    public static void writeFileUser(ArrayList<User> xSave, String pathname) {
+        ArrayList<User> completeList = (FileUser.readFileUser(pathname));
         completeList.addAll(xSave);
         BufferedWriter bWriter = null;
         try {
@@ -39,7 +38,7 @@ public class FileUser extends Storage {
         }
     }
 
-    public ArrayList readFileUser (String pathname) {
+    public static ArrayList<User> readFileUser (String pathname) {
         ArrayList<User> list = new ArrayList<>();
         BufferedReader bReader = null;
         File file = new File(pathname);
@@ -71,8 +70,8 @@ public class FileUser extends Storage {
     }
 
     @Override
-    public void createFiles(String pathname) {
-        super.createFiles(pathname);
+    public boolean createFile(String pathname) {
+        return super.createFile(pathname);
     }
 
     @Override

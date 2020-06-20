@@ -1,33 +1,47 @@
 package com.company.fileManagement;
 
+import com.company.enterprise.Flight;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.planes.Plane;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Storage {
+    private static ArrayList<Plane> planes;
+    private static ArrayList<User> users;
+    private static ArrayList<Flight> fligts;
 
     public Storage() {
+        planes = new ArrayList<>();
+        users = new ArrayList<>();
+        fligts = new ArrayList<>();
     }
 
-    // A partir de una ruta, crea un archivo si es que no existe.
-    public void createFiles(String pathname) {
+    public static ArrayList<Plane> getPlanes() {
+        return planes;
+    }
+
+    public static ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public static ArrayList<Flight> getFligts() {
+        return fligts;
+    }
+
+    public boolean createFile(String pathname) {
         File files = new File(pathname);
-        if (!files.exists()) {
-            try {
-                files.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("El archivo " + files.getPath().toString() + " ya existe.");
+        try {
+            return files.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     // Vacia toda la informacion que hay en el archivo
@@ -44,4 +58,32 @@ public abstract class Storage {
             }
         }
     }
+
+    public static void firstData(){
+        File filePlane = new File(FilePath.PLANES.getPathname());
+        if(filePlane.exists())
+            planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+        else {
+            FilePlane filePlane1 = new FilePlane();
+            filePlane1.createFile(FilePath.PLANES.getPathname());
+        }
+
+        File fileUser = new File(FilePath.PLANES.getPathname());
+        if(fileUser.exists())
+            users = FileUser.readFileUser(FilePath.USERS.getPathname());
+        else {
+            FilePlane fileUser1 = new FilePlane();
+            fileUser1.createFile(FilePath.PLANES.getPathname());
+        }
+
+        File fileFlights = new File(FilePath.FLIGHTS.getPathname());
+        if(fileFlights.exists())
+            fligts = FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname());
+        else {
+            FileFlight fileFlight1 = new FileFlight();
+            fileFlight1.createFile(FilePath.PLANES.getPathname());
+        }
+
+    }
+
 }

@@ -49,9 +49,9 @@ public class Main {
             FileUser fileUsers = new FileUser();
             FileFlight fileFlight = new FileFlight();
             // Se crean los archivos
-            filePlane.createFiles("files\\planes.json");
-            fileUsers.createFiles("files\\users.json");
-            fileFlight.createFiles("files\\flights.json");
+            filePlane.createFile("files\\planes.json");
+            fileUsers.createFile("files\\users.json");
+            fileFlight.createFile("files\\flights.json");
             ///  testeos  sobre el manejo de archivos en plane y user
 
             Bronze learjet = new Bronze("Learjet 40", 2420, 300, 7, 859, "reaction");

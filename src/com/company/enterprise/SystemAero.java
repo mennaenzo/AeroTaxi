@@ -2,6 +2,7 @@ package com.company.enterprise;
 
 import com.company.enums.City;
 import com.company.enums.Journey;
+import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,7 @@ public class SystemAero {
         int max = 0;
 
         if(!available.containsKey(date)){
-            ArrayList<Plane> planes = DataLoad.getPlanes();
+            ArrayList<Plane> planes = Storage.getPlanes();
             for (Plane plane: planes) {
                 if(plane.getPassengers() > max)
                     max = plane.getPassengers();
@@ -43,6 +44,8 @@ public class SystemAero {
     }
 
     public void setUp(){
+        Storage.firstData();
+
 
     }
 

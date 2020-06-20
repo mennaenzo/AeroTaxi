@@ -15,9 +15,8 @@ public class FileFlight extends Storage{
     public FileFlight() {
     }
 
-    public void writeFilePlane(ArrayList<Flight> xSave, String pathname) {
-        FileFlight fileFlight = new FileFlight();
-        ArrayList<Flight> completeList = (fileFlight.readFileFlight(pathname)); //Lee el archivo antes de escribir, para no sobreecribirlo.
+    public static void writeFilePlane(ArrayList<Flight> xSave, String pathname) {
+        ArrayList<Flight> completeList = (FileFlight.readFileFlight(pathname));
         completeList.addAll(xSave);
         BufferedWriter bWriter= null;
         try {
@@ -43,7 +42,7 @@ public class FileFlight extends Storage{
 
     // A partir de una ruta, lee un archivo.
 
-    public ArrayList readFileFlight(String pathname) {
+    public static ArrayList<Flight> readFileFlight(String pathname) {
         ArrayList<Flight> list = new ArrayList<>();
         BufferedReader bReader = null;
         File file = new File(pathname);
@@ -68,8 +67,8 @@ public class FileFlight extends Storage{
     }
 
     @Override
-    public void createFiles(String pathname) {
-        super.createFiles(pathname);
+    public boolean createFile(String pathname) {
+        return super.createFile(pathname);
     }
 
     @Override
