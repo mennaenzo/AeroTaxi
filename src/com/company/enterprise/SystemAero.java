@@ -3,14 +3,12 @@ package com.company.enterprise;
 import com.company.enums.City;
 import com.company.enums.Journey;
 import com.company.planes.Plane;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SystemAero {
-    private  HashMap<Date, ArrayList<Plane>> available;
-    private int maxPassengers;
+    private HashMap<Date, ArrayList<Plane>> available;
 
     public HashMap<Date, ArrayList<Plane>> getAvailable() {
         return available;
@@ -20,12 +18,24 @@ public class SystemAero {
         this.available = available;
     }
 
-    public int getMaxPassengers() {
-        return maxPassengers;
-    }
+    public int getMaxPassengers(Date date) {
+        int max = 0;
 
-    public void setMaxPassengers(int maxPassengers) {
-        this.maxPassengers = maxPassengers;
+        if(!available.containsKey(date)){
+            ArrayList<Plane> planes = DataLoad.getPlanes();
+            for (Plane plane: planes) {
+                if(plane.getPassengers() > max)
+                    max = plane.getPassengers();
+            }
+        }
+        else{
+            ArrayList<Plane> planes1 = available.get(date);
+            for (Plane plane: planes1) {
+                if(plane.getPassengers() > max)
+                    max = plane.getPassengers();
+            }
+        }
+        return max;
     }
 
     public SystemAero() {
@@ -36,7 +46,7 @@ public class SystemAero {
 
     }
 
-    public Flight checkIn(User user){
+    private Flight checkIn(User user){
         System.out.print("Select Date(DD/MM/YY HH:MM): ");
         Scanner scanner = new Scanner(System.in);
         String scannerDate = scanner.nextLine();
@@ -48,23 +58,42 @@ public class SystemAero {
             origin = menuOrigin(scanner);
         }
         if(origin != null) {
-
             String destination = menuDestination(scanner, origin);
             if(destination == null) {
                 System.out.println("Please select a number between 1 and 3. Last chance!");
                 destination = menuDestination(scanner, origin);
             }
-            Journey journey = Journey.compare(origin,destination);
-            System.out.println("Please enter the number of companions");
-            int companions = scanner.nextInt();
-            Flight flightData = new Flight(date, journey, user, companions);  // Devuelve ( en principio))un vuelo con los datos administrados por el usuario
-            /// sin terminar
-            return  flightData;
-        }
-        else
-            return null;
-    }
+            if(destination != null){
+                Journey journey = Journey.compare(origin,destination);
+                System.out.println("Please enter the number of your companions");
+                int companions = scanner.nextInt();
+                int maxPassenger = getMaxPassengers(date);
 
+                if(companions+1 <= maxPassenger){
+                    Plane plane = planeAvailable(date, maxPassenger);
+                    System.out.println("Cost " + plane.getModel() + " : ");
+                    System.out.println("1 - Accept");
+                    System.out.println("2 - Cancel");
+                    int accept = scanner.nextInt();
+
+                    //ciclarlo y modularizar
+                    switch (accept){
+                        case 1:
+                            UserMenu.getCost(journey, plane, companions+1);
+                            return UserMenu.confirmFligth(date, journey, plane, user, companions+1);
+                            break;
+                        case 2:
+                            return null;
+                            break;
+                        default:
+                            System.out.println("Please select 1 or 2. Choose again!");
+                            break;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     private Date checkDate(String scannerDate){
         SimpleDateFormat simpleDate = new SimpleDateFormat();

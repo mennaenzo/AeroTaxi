@@ -40,9 +40,9 @@ public class Main {
         }
         System.out.println(dates);
 */
-        User martin =new User("martin","gomez",4141,21);
+        User martin = new User("martin","gomez",4141,21);
         SystemAero test = new SystemAero();
-        test.checkIn(martin);
+        //test.checkIn(martin);
 
 /*
             FilePlane filePlane = new FilePlane();

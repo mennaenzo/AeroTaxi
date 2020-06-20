@@ -41,8 +41,6 @@ public enum Journey {
     }
 
     public static Journey compare(String origin, String destination) {
-        System.out.println(origin);
-        System.out.println(destination);
         for (Journey journey: Journey.values()) {
             if (journey.getOrigin().equals(origin) && journey.getDestination().equals(destination)) {
                 return journey;
@@ -50,29 +48,4 @@ public enum Journey {
         }
         return null;
     }
-   /* public static Journey compare(String origin, String destination) { //va o no va?
-        if(origin.equals("BSAS")){
-            if(destination.equals("CDB")){
-                return Journey.BSAS_CDB;
-            }
-            else if(destination.equals("STG")){
-                return Journey.BSAS_STG;
-            }
-            else
-                return Journey.BSAS_MTV;
-        }
-        else if(origin.equals("CDB")){
-            if(destination.equals("MTV")){
-                return Journey.CDB_MTV;
-            }
-            else if(destination.equals("STG")){
-                return Journey.CDB_STG;
-            }
-        }
-        else
-            return Journey.MTV_STG;
-        return null;
-    }*/
-
-
 }
