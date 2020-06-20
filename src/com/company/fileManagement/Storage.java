@@ -83,7 +83,6 @@ public abstract class Storage {
             FileFlight fileFlight1 = new FileFlight();
             fileFlight1.createFile(FilePath.PLANES.getPathname());
         }
-
     }
 
 }
