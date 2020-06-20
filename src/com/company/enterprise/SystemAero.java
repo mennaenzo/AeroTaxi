@@ -84,10 +84,8 @@ public class SystemAero {
                         case 1:
                             UserMenu.getCost(journey, plane, companions+1);
                             return UserMenu.confirmFligth(date, journey, plane, user, companions+1);
-                            break;
                         case 2:
                             return null;
-                            break;
                         default:
                             System.out.println("Please select 1 or 2. Choose again!");
                             break;
@@ -250,15 +248,14 @@ public class SystemAero {
                 System.out.println(plane.toString());
                 System.out.println("\n");
             }
-            System.out.println("Plase choose the plane where you want to travel:");
+            System.out.println("Please choose the plane where you want to travel:");
             Scanner scanner = new Scanner(System.in);
             int opcion = scanner.nextInt();
             if(opcion <= listPlaneAvailable.size()+1){
                 return listPlaneAvailable.get(opcion);
             }
-            else
-                return null;
         }
+        return null;
     }
 
 
