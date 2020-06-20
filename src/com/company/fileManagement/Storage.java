@@ -17,7 +17,7 @@ public abstract class Storage {
     }
 
     // A partir de una ruta, crea un archivo si es que no existe.
-    public  void createFiles(String pathname) {
+    public void createFiles(String pathname) {
         File files = new File(pathname);
         if (!files.exists()) {
             try {

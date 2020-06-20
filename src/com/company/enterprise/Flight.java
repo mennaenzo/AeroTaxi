@@ -22,6 +22,13 @@ public class Flight {
         this.cost = cost;
     }
 
+    public Flight(Date date, Journey journey, User user, int passengers) {
+        this.date = date;
+        this.journey = journey;
+        this.user = user;
+        this.passengers = passengers;
+    }
+
     public Date getDate() {
         return date;
     }

@@ -21,6 +21,10 @@ public class User {
         trips = new ArrayList<>();
     }
 
+    public ArrayList<Flight> getCheckIn() {
+        return checkIn;
+    }
+
     public String getName() {
         return name;
     }

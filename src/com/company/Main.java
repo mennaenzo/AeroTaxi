@@ -1,4 +1,5 @@
 package com.company;
+import com.company.enterprise.SystemAero;
 import com.company.enterprise.User;
 import com.company.enterprise.UserMenu;
 import com.company.enums.City;
@@ -24,7 +25,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
+/*
         Date date = new Date(2020,05,10,12,50);
         SimpleDateFormat simpleDate = new SimpleDateFormat();
         System.out.println(simpleDate.format(date));
@@ -37,8 +38,11 @@ public class Main {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        System.out.println(date);
+        System.out.println(dates);
+*/
+        User martin =new User("martin","gomez",4141,21);
+        SystemAero test = new SystemAero();
+        test.checkIn(martin);
 
 /*
             FilePlane filePlane = new FilePlane();

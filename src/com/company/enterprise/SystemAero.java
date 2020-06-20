@@ -9,19 +9,34 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SystemAero {
-    private final HashMap<Date, ArrayList<Plane>> available;
+    private  HashMap<Date, ArrayList<Plane>> available;
     private int maxPassengers;
 
+    public HashMap<Date, ArrayList<Plane>> getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(HashMap<Date, ArrayList<Plane>> available) {
+        this.available = available;
+    }
+
+    public int getMaxPassengers() {
+        return maxPassengers;
+    }
+
+    public void setMaxPassengers(int maxPassengers) {
+        this.maxPassengers = maxPassengers;
+    }
+
     public SystemAero() {
-        available = new HashMap<>();
 
     }
 
     public void setUp(){
-        // cargar aviones, maxpass, hashmap, etc
+
     }
 
-    public void checkIn(User user){
+    public Flight checkIn(User user){
         System.out.print("Select Date(DD/MM/YY HH:MM): ");
         Scanner scanner = new Scanner(System.in);
         String scannerDate = scanner.nextLine();
@@ -31,18 +46,25 @@ public class SystemAero {
         if(origin == null) {
             System.out.println("Please select a number between 1 and 4. Last chance!");
             origin = menuOrigin(scanner);
-            if(origin != null) {
-                String destination = menuDestination(scanner, origin);
-                if(destination == null) {
-                    System.out.println("Please select a number between 1 and 3. Last chance!");
-                    destination = menuDestination(scanner, origin);
-                }
-                else{
-                    //Journey journey = Journey.compare(origin,destination); // OPTIMIZE
-                }
-            }
         }
+        if(origin != null) {
+
+            String destination = menuDestination(scanner, origin);
+            if(destination == null) {
+                System.out.println("Please select a number between 1 and 3. Last chance!");
+                destination = menuDestination(scanner, origin);
+            }
+            Journey journey = Journey.compare(origin,destination);
+            System.out.println("Please enter the number of companions");
+            int companions = scanner.nextInt();
+            Flight flightData = new Flight(date, journey, user, companions);  // Devuelve ( en principio))un vuelo con los datos administrados por el usuario
+            /// sin terminar
+            return  flightData;
+        }
+        else
+            return null;
     }
+
 
     private Date checkDate(String scannerDate){
         SimpleDateFormat simpleDate = new SimpleDateFormat();
@@ -64,16 +86,16 @@ public class SystemAero {
 
         switch (numberChose) {
             case 1:
-                origin = City.BSAS.toString();
+                origin = City.BSAS.getName();
                 break;
             case 2:
-                origin = City.STG.toString();
+                origin = City.STG.getName();
                 break;
             case 3:
-                origin = City.CDB.toString();
+                origin = City.CDB.getName();
                 break;
             case 4:
-                origin = City.MTV.toString();
+                origin = City.MTV.getName();
                 break;
             default:
                 origin = null;
@@ -89,50 +111,51 @@ public class SystemAero {
 
         numberChose = scanner.nextInt();
         String destination = null;
+        System.out.println(numberChose);
 
-        switch (numberChose) {
+        switch (option) {
             case 1:
-                if (option == 1) {
-                    destination = City.STG.toString();
+                if (numberChose == 1) {
+                    destination = City.STG.getName();
                 }
-                else if (option == 2) {
-                    destination = City.CDB.toString();
+                else if (numberChose == 2) {
+                    destination = City.CDB.getName();
                 }
-                else if (option == 3) {
-                    destination = City.MTV.toString();
+                else if (numberChose == 3) {
+                    destination = City.MTV.getName();
                 }
                 break;
             case 2:
-                if (option == 1) {
-                    destination = City.BSAS.toString();
+                if (numberChose == 1) {
+                    destination = City.BSAS.getName();
                 }
-                else if (option == 2) {
-                    destination = City.CDB.toString();
+                else if (numberChose == 2) {
+                    destination = City.CDB.getName();
                 }
-                else if (option == 3) {
-                    destination = City.MTV.toString();
+                else if (numberChose == 3) {
+                    destination = City.MTV.getName();
                 }
                 break;
             case 3:
-                if (option == 1) {
-                    destination = City.BSAS.toString();
+                if (numberChose == 1) {
+                    destination = City.BSAS.getName();
                 }
-                else if (option == 2) {
-                    destination = City.STG.toString();
+                else if (numberChose == 2) {
+                    destination = City.STG.getName();
                 }
-                else if (option == 3) {
-                    destination = City.MTV.toString();
+                else if (numberChose== 3) {
+                    destination = City.MTV.getName();
                 }
                 break;
             case 4:
-                if (option == 1) {
-                    destination = City.BSAS.toString();
+                if (numberChose == 1) {
+                    destination = City.BSAS.getName();
                 }
-                else if (option == 2) {
-                    destination = City.STG.toString();
+                else if (numberChose == 2) {
+                    destination = City.STG.getName();
                 }
-                else if (option == 3) {
-                    destination = City.CDB.toString();
+                else if (numberChose == 3) {
+                    destination = City.CDB.getName();
                 }
                 break;
             default:
@@ -153,28 +176,28 @@ public class SystemAero {
     }
 
     private int printDestination(String origin){
-        if (origin.equals("BSAS")) {
+        if (origin.equals(City.BSAS.getName())) {
             System.out.println("Select Destination (1-3):");
             System.out.println("    1 - SANTIAGO");
             System.out.println("    2 - CORDOBA");
             System.out.println("    3 - MONTEVIDEO");
             System.out.print("Option: ");
             return 1;
-        } else if (origin.equals("STG")) {
+        } else if (origin.equals(City.STG.getName())) {
             System.out.println("Select Destination (1-3):");
             System.out.println("    1 - BUENOS AIRES");
             System.out.println("    2 - CORDOBA");
             System.out.println("    3 - MONTEVIDEO");
             System.out.print("Option: ");
             return 2;
-        } else if (origin.equals("CDB")) {
+        } else if (origin.equals(City.CDB.getName())) {
             System.out.println("Select Destination (1-3):");
             System.out.println("    1 - BUENOS AIRES");
             System.out.println("    2 - SANTIAGO");
             System.out.println("    3 - MONTEVIDEO");
             System.out.print("Option: ");
             return 3;
-        } else if (origin.equals("MTV")) {
+        } else if (origin.equals(City.MTV.getName())) {
             System.out.println("Select Destination (1-3):");
             System.out.println("    1 - BUENOS AIRES");
             System.out.println("    2 - SANTIAGO");
