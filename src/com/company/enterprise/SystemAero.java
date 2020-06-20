@@ -254,7 +254,7 @@ public class SystemAero {
             Scanner scanner = new Scanner(System.in);
             int opcion = scanner.nextInt();
             if(opcion <= listPlaneAvailable.size()+1){
-                return listPlaneAvailable.get(opcion),
+                return listPlaneAvailable.get(opcion);
             }
             else
                 return null;
