@@ -17,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -28,6 +29,7 @@ public class Main {
 /*
         Date date = new Date(2020,05,10,12,50);
         SimpleDateFormat simpleDate = new SimpleDateFormat();
+
         System.out.println(simpleDate.format(date));
         Plane planeGold = new Gold("King Air 250", 1653, 301, 10, 574, "helice");
         System.out.println(planeGold.getRate());
@@ -39,10 +41,10 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println(dates);
+
 */
-        User martin = new User("martin","gomez",4141,21);
         SystemAero test = new SystemAero();
-        //test.checkIn(martin);
+        test.setUp();
 
 /*
             FilePlane filePlane = new FilePlane();

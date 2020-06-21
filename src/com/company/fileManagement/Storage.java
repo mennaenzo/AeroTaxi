@@ -4,6 +4,7 @@ import com.company.enterprise.Flight;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.planes.Plane;
+import com.sun.org.apache.xpath.internal.objects.XString;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,6 +15,19 @@ import java.util.ArrayList;
 public abstract class Storage {
     private static ArrayList<Plane> planes;
     private static ArrayList<User> users;
+
+    public static void setPlanes(ArrayList<Plane> planes) {
+        Storage.planes = planes;
+    }
+
+    public static void setUsers(ArrayList<User> users) {
+        Storage.users = users;
+    }
+
+    public static void setFligts(ArrayList<Flight> fligts) {
+        Storage.fligts = fligts;
+    }
+
     private static ArrayList<Flight> fligts;
 
     public Storage() {
@@ -85,4 +99,4 @@ public abstract class Storage {
         }
     }
 
-}
+    }

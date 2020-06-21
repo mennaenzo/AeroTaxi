@@ -1,9 +1,11 @@
 package com.company.fileManagement;
 
 import com.company.enterprise.User;
+import com.company.enums.FilePath;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.omg.CORBA.WStringSeqHelper;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -69,6 +71,15 @@ public class FileUser extends Storage {
         return list; // Devuelve el contenido del archivo
     }
 
+    public static ArrayList<User> createDataUser (String pathname){
+        ArrayList<User> listSave = new ArrayList<>();
+        User enzo = new User("Enzo","Menna",39341231,26);
+        User martin = new User("Martin","Gomez Vega",41429427,21);
+        listSave.add(enzo);
+        listSave.add(martin);
+        FileUser.writeFileUser(listSave,pathname);
+        return listSave;
+    }
     @Override
     public boolean createFile(String pathname) {
         return super.createFile(pathname);

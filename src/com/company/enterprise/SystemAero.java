@@ -1,7 +1,10 @@
 package com.company.enterprise;
 
 import com.company.enums.City;
+import com.company.enums.FilePath;
 import com.company.enums.Journey;
+import com.company.fileManagement.FilePlane;
+import com.company.fileManagement.FileUser;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
 import java.text.ParseException;
@@ -11,6 +14,9 @@ import java.util.*;
 public class SystemAero {
     private HashMap<Date, ArrayList<Plane>> available;
 
+    public SystemAero() {
+
+    }
     public HashMap<Date, ArrayList<Plane>> getAvailable() {
         return available;
     }
@@ -20,9 +26,10 @@ public class SystemAero {
     }
 
     public int getMaxPassengers(Date date) {
+
         int max = 0;
 
-        if(!available.containsKey(date)){
+        if(!available.containsKey(date) == true){
             ArrayList<Plane> planes = Storage.getPlanes();
             for (Plane plane: planes) {
                 if(plane.getPassengers() > max)
@@ -39,15 +46,17 @@ public class SystemAero {
         return max;
     }
 
-    public SystemAero() {
 
-    }
 
-    public void setUp(){
+    public void setUp() {
         Storage.firstData();
-
-
+        Storage.setPlanes(FilePlane.createDataPlane(FilePath.PLANES.getPathname()));
+        Storage.setUsers(FileUser.createDataUser(FilePath.USERS.getPathname()));
+        for (User user : Storage.getUsers()) {
+            Flight test = checkIn(user);
+        }
     }
+
 
     private Flight checkIn(User user){
         System.out.print("Select Date(DD/MM/YY HH:MM): ");
@@ -71,28 +80,34 @@ public class SystemAero {
                 System.out.println("Please enter the number of your companions");
                 int companions = scanner.nextInt();
                 int maxPassenger = getMaxPassengers(date);
-
+                System.out.println(maxPassenger);
                 if(companions+1 <= maxPassenger){
-                    Plane plane = planeAvailable(date, maxPassenger);
+                    Plane plane = planeAvailable(date);
                     System.out.println("Cost " + plane.getModel() + " : ");
                     System.out.println("1 - Accept");
                     System.out.println("2 - Cancel");
-                    int accept = scanner.nextInt();
-
-                    //ciclarlo y modularizar
-                    switch (accept){
-                        case 1:
-                            UserMenu.getCost(journey, plane, companions+1);
-                            return UserMenu.confirmFligth(date, journey, plane, user, companions+1);
-                        case 2:
-                            return null;
-                        default:
-                            System.out.println("Please select 1 or 2. Choose again!");
-                            break;
-                    }
+                    return validateDecision(scanner,journey,plane,companions,date,user);
                 }
             }
         }
+        return null;
+    }
+
+
+    public Flight validateDecision(Scanner scanner, Journey journey, Plane plane, int companions, Date date, User user) {
+        int decision = scanner.nextInt();
+        while (decision < 1 || decision > 2){
+            System.out.println("Please select 1 or 2. Choose again!");
+            decision = scanner.nextInt();
+        }
+        switch (decision) {
+            case 1:
+                UserMenu.getCost(journey, plane, companions + 1);
+                return UserMenu.confirmFligth(date, journey, plane, user, companions + 1);
+            case 2:
+                return null;
+        }
+
         return null;
     }
 
@@ -238,7 +253,7 @@ public class SystemAero {
         return 0;
     }
 
-    public Plane planeAvailable(Date date, int maxPassengers){
+    public Plane planeAvailable(Date date){
         int i = 1;
         if(available.containsKey(date)) {
             ArrayList<Plane> listPlaneAvailable = available.get(date);
