@@ -4,7 +4,6 @@ import com.company.enterprise.Flight;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.planes.Plane;
-import com.sun.org.apache.xpath.internal.objects.XString;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -98,5 +97,17 @@ public abstract class Storage {
             fileFlight1.createFile(FilePath.PLANES.getPathname());
         }
     }
+
+    public static int getMaxPassengers(){
+        int max = 0;
+        for (Plane plane: planes) {
+            if(max < plane.getPassengers()){
+                max = plane.getPassengers();
+            }
+        }
+        return max;
+    }
+
+    public static ArrayList<Plane> getMaxPlane(int maxPassengers){
 
     }

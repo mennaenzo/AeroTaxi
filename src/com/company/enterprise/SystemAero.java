@@ -15,7 +15,7 @@ public class SystemAero {
     private HashMap<Date, ArrayList<Plane>> available;
 
     public SystemAero() {
-
+        available = new HashMap<>();
     }
     public HashMap<Date, ArrayList<Plane>> getAvailable() {
         return available;
@@ -28,20 +28,23 @@ public class SystemAero {
     public int getMaxPassengers(Date date) {
 
         int max = 0;
-
-        if(!available.containsKey(date) == true){
-            ArrayList<Plane> planes = Storage.getPlanes();
-            for (Plane plane: planes) {
-                if(plane.getPassengers() > max)
-                    max = plane.getPassengers();
+        if(!available.isEmpty()) {
+            if (!available.containsKey(date)) {
+                ArrayList<Plane> planes = Storage.getPlanes();
+                for (Plane plane : planes) {
+                    if (plane.getPassengers() > max)
+                        max = plane.getPassengers();
+                }
+            } else {
+                ArrayList<Plane> planes1 = available.get(date);
+                for (Plane plane : planes1) {
+                    if (plane.getPassengers() > max)
+                        max = plane.getPassengers();
+                }
             }
         }
         else{
-            ArrayList<Plane> planes1 = available.get(date);
-            for (Plane plane: planes1) {
-                if(plane.getPassengers() > max)
-                    max = plane.getPassengers();
-            }
+            return Storage.getMaxPassengers();
         }
         return max;
     }
@@ -82,7 +85,7 @@ public class SystemAero {
                 int maxPassenger = getMaxPassengers(date);
                 System.out.println(maxPassenger);
                 if(companions+1 <= maxPassenger){
-                    Plane plane = planeAvailable(date);
+                    Plane plane = planeAvailable(date, maxPassenger);
                     System.out.println("Cost " + plane.getModel() + " : ");
                     System.out.println("1 - Accept");
                     System.out.println("2 - Cancel");
@@ -253,22 +256,27 @@ public class SystemAero {
         return 0;
     }
 
-    public Plane planeAvailable(Date date){
+    public Plane planeAvailable(Date date, int maxPassengers){
         int i = 1;
-        if(available.containsKey(date)) {
-            ArrayList<Plane> listPlaneAvailable = available.get(date);
-            for (Plane plane: listPlaneAvailable){
-                System.out.println("Opcion: " + i);
-                i++;
-                System.out.println(plane.toString());
-                System.out.println("\n");
+        if(!available.isEmpty()) {
+            if (available.containsKey(date)) {
+                ArrayList<Plane> listPlaneAvailable = available.get(date);
+                for (Plane plane : listPlaneAvailable) {
+                    System.out.println("Opcion: " + i);
+                    i++;
+                    System.out.println(plane.toString());
+                    System.out.println("\n");
+                }
+                System.out.println("Please choose the plane where you want to travel:");
+                Scanner scanner = new Scanner(System.in);
+                int opcion = scanner.nextInt();
+                if (opcion <= listPlaneAvailable.size() + 1) {
+                    return listPlaneAvailable.get(opcion);
+                }
             }
-            System.out.println("Please choose the plane where you want to travel:");
-            Scanner scanner = new Scanner(System.in);
-            int opcion = scanner.nextInt();
-            if(opcion <= listPlaneAvailable.size()+1){
-                return listPlaneAvailable.get(opcion);
-            }
+        }
+        else{
+
         }
         return null;
     }
