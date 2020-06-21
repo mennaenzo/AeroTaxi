@@ -79,14 +79,16 @@ public abstract class Storage {
         else {
             FilePlane filePlane1 = new FilePlane();
             filePlane1.createFile(FilePath.PLANES.getPathname());
+            setPlanes(FilePlane.createDataPlane(FilePath.PLANES.getPathname()));
         }
 
-        File fileUser = new File(FilePath.PLANES.getPathname());
+        File fileUser = new File(FilePath.USERS.getPathname());
         if(fileUser.exists())
             users = FileUser.readFileUser(FilePath.USERS.getPathname());
         else {
-            FilePlane fileUser1 = new FilePlane();
-            fileUser1.createFile(FilePath.PLANES.getPathname());
+            FileUser fileUser1 = new FileUser();
+            fileUser1.createFile(FilePath.USERS.getPathname());
+            setUsers(FileUser.createDataUser(FilePath.USERS.getPathname()));
         }
 
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
@@ -94,7 +96,7 @@ public abstract class Storage {
             fligts = FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname());
         else {
             FileFlight fileFlight1 = new FileFlight();
-            fileFlight1.createFile(FilePath.PLANES.getPathname());
+            fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
         }
     }
 

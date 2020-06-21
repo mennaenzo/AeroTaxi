@@ -7,8 +7,6 @@ import com.company.fileManagement.FilePlane;
 import com.company.fileManagement.FileUser;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,8 +53,6 @@ public class SystemAero {
 
     public void setUp() {
         Storage.firstData();
-        Storage.setPlanes(FilePlane.createDataPlane(FilePath.PLANES.getPathname()));
-        Storage.setUsers(FileUser.createDataUser(FilePath.USERS.getPathname()));
         for (User user : Storage.getUsers()) {
             Flight test = checkIn(user);
         }
@@ -259,20 +255,21 @@ public class SystemAero {
     }
 
     public Plane planeAvailable(Date date, int maxPassengers){
-        ArrayList<Plane> listPlaneAvailable;
-        Plane chosenPlane = new Plane();
+        ArrayList<Plane> listPlaneAvailable = new ArrayList<>();
+        Plane chosePlane = new Plane();
         if(!available.isEmpty()) {
             if (available.containsKey(date)) {
                 listPlaneAvailable = available.get(date);
-                chosenPlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
-                return  chosenPlane;
+                chosePlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
+                return  chosePlane;
                 }
             }
         else{
             listPlaneAvailable = Storage.getMaxPlane(maxPassengers);
-            chosenPlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
+            chosePlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
+
         }
-        return chosenPlane;
+        return chosePlane;
     }
 
     public Plane choosePlanesAvailable(ArrayList<Plane> listPlane, int maxPassengers){
@@ -303,5 +300,6 @@ public class SystemAero {
                     return  null;
                 }
         }
+
     }
 }
