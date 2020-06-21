@@ -7,6 +7,8 @@ import com.company.fileManagement.FilePlane;
 import com.company.fileManagement.FileUser;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -255,29 +257,54 @@ public class SystemAero {
         }
         return 0;
     }
-
+/*
     public Plane planeAvailable(Date date, int maxPassengers){
-        int i = 1;
+
+        ArrayList<Plane> listPlaneAvailable = new ArrayList<>();
+        Plane chosePlane = new Plane();
+        ScriptObjectMirror availble;
         if(!available.isEmpty()) {
             if (available.containsKey(date)) {
-                ArrayList<Plane> listPlaneAvailable = available.get(date);
-                for (Plane plane : listPlaneAvailable) {
-                    System.out.println("Opcion: " + i);
-                    i++;
-                    System.out.println(plane.toString());
-                    System.out.println("\n");
-                }
-                System.out.println("Please choose the plane where you want to travel:");
-                Scanner scanner = new Scanner(System.in);
-                int opcion = scanner.nextInt();
-                if (opcion <= listPlaneAvailable.size() + 1) {
-                    return listPlaneAvailable.get(opcion);
+                listPlaneAvailable = available.get(date);
+
                 }
             }
-        }
         else{
+            listPlaneAvailable = Storage.getMaxPlane(maxPassengers);
+
 
         }
-        return null;
+        return listPlaneAvailable;
+    }
+*/
+    public Plane chosePlanesAvailable (ArrayList<Plane> listPlane, int maxPassengers){
+        int i = 1;
+        for (Plane plane : listPlane) {
+            if(plane.getPassengers() <= maxPassengers){
+                System.out.println("Opcion: " + i);
+                i++;
+                System.out.println(plane.toString());
+                System.out.println("\n");
+            }
+        }
+        System.out.println("Please choose the plane where you want to travel:");
+        Scanner scanner = new Scanner(System.in);
+        int option = scanner.nextInt();
+
+        if (option <= listPlane.size() + 1) {
+            return listPlane.get(option-1);
+        }
+        else{
+            System.out.println("Please choose the plane where you want to travel:");
+            option = scanner.nextInt();
+            if (option <= listPlane.size() + 1) {
+                return listPlane.get(option-1);
+            }
+            else{
+                    System.out.println("ERROR");
+                    return  null;
+                }
+        }
+
     }
 }

@@ -109,5 +109,12 @@ public abstract class Storage {
     }
 
     public static ArrayList<Plane> getMaxPlane(int maxPassengers){
-
+    ArrayList<Plane> planeListAvailable = null;
+        for (Plane plane: Storage.getPlanes()) {
+            if(plane.getPassengers() <= maxPassengers){
+                planeListAvailable.add(plane);
+            }
+        }
+    return planeListAvailable;
     }
+}
