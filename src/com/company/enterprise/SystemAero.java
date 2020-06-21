@@ -86,7 +86,7 @@ public class SystemAero {
                 System.out.println(maxPassenger);
                 if(companions+1 <= maxPassenger){
                     Plane plane = planeAvailable(date, maxPassenger);
-                    System.out.println("Cost " + plane.getModel() + " : ");
+                    System.out.println("Cost $" + UserMenu.getCost(journey,plane,companions+1) + " - Plane " + plane.getModel() + " : ");
                     System.out.println("1 - Accept");
                     System.out.println("2 - Cancel");
                     return validateDecision(scanner,journey,plane,companions,date,user);
