@@ -3,8 +3,8 @@ package com.company.enterprise;
 import com.company.enums.City;
 import com.company.enums.FilePath;
 import com.company.enums.Journey;
+import com.company.fileManagement.FileFlight;
 import com.company.fileManagement.FilePlane;
-import com.company.fileManagement.FileUser;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
 import java.text.ParseException;
@@ -53,9 +53,11 @@ public class SystemAero {
 
     public void setUp() {
         Storage.firstData();
+        ArrayList<Flight> flights = new ArrayList<>();
         for (User user : Storage.getUsers()) {
-            Flight test = checkIn(user);
+            flights.add(checkIn(user));
         }
+        FileFlight.writeFileFlight(flights, FilePath.FLIGHTS.getPathname());
     }
 
 
@@ -81,10 +83,9 @@ public class SystemAero {
                 System.out.println("Please enter the number of your companions");
                 int companions = scanner.nextInt();
                 int maxPassenger = getMaxPassengers(date);
-                System.out.println(maxPassenger);
                 if(companions+1 <= maxPassenger){
                     Plane plane = planeAvailable(date, maxPassenger);
-                    System.out.println("Cost $" + UserMenu.getCost(journey,plane,companions+1) + " - Plane " + plane.getModel() + " : ");
+                    System.out.println("Cost $" + UserMenu.getCost(journey,plane,companions+1) + " - Plane " + plane.getModel() + ": ");
                     System.out.println("1 - Accept");
                     System.out.println("2 - Cancel");
                     return validateDecision(scanner,journey,plane,companions,date,user);
@@ -108,7 +109,6 @@ public class SystemAero {
             case 2:
                 return null;
         }
-
         return null;
     }
 
@@ -255,21 +255,18 @@ public class SystemAero {
     }
 
     public Plane planeAvailable(Date date, int maxPassengers){
-        ArrayList<Plane> listPlaneAvailable = new ArrayList<>();
-        Plane chosePlane = new Plane();
+        ArrayList<Plane> listPlaneAvailable;
         if(!available.isEmpty()) {
             if (available.containsKey(date)) {
                 listPlaneAvailable = available.get(date);
-                chosePlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
-                return  chosePlane;
+                return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
                 }
             }
         else{
             listPlaneAvailable = Storage.getMaxPlane(maxPassengers);
-            chosePlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
-
+            return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
         }
-        return chosePlane;
+        return null;
     }
 
     public Plane choosePlanesAvailable(ArrayList<Plane> listPlane, int maxPassengers){
@@ -296,10 +293,10 @@ public class SystemAero {
                 return listPlane.get(option-1);
             }
             else{
-                    System.out.println("ERROR");
-                    return  null;
-                }
+                System.out.println("ERROR");
+                return null;
+            }
         }
-
     }
+
 }

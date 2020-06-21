@@ -15,7 +15,7 @@ public class FileFlight extends Storage{
     public FileFlight() {
     }
 
-    public static void writeFilePlane(ArrayList<Flight> xSave, String pathname) {
+    public static void writeFileFlight(ArrayList<Flight> xSave, String pathname) {
         ArrayList<Flight> completeList = (FileFlight.readFileFlight(pathname));
         completeList.addAll(xSave);
         BufferedWriter bWriter= null;

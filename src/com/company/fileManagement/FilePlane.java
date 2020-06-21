@@ -65,7 +65,9 @@ public class FilePlane extends Storage{
             }
             finally {
                 try {
-                    bReader.close();
+                    if (bReader != null) {
+                        bReader.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

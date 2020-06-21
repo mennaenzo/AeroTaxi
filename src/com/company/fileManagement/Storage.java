@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public abstract class Storage {
     private static ArrayList<Plane> planes;
     private static ArrayList<User> users;
+    private static ArrayList<Flight> fligts;
 
     public static void setPlanes(ArrayList<Plane> planes) {
         Storage.planes = planes;
@@ -26,8 +27,6 @@ public abstract class Storage {
     public static void setFligts(ArrayList<Flight> fligts) {
         Storage.fligts = fligts;
     }
-
-    private static ArrayList<Flight> fligts;
 
     public Storage() {
         planes = new ArrayList<>();
@@ -111,9 +110,9 @@ public abstract class Storage {
     }
 
     public static ArrayList<Plane> getMaxPlane(int maxPassengers){
-    ArrayList<Plane> planeListAvailable = null;
+    ArrayList<Plane> planeListAvailable = new ArrayList<>();
         for (Plane plane: Storage.getPlanes()) {
-            if(plane.getPassengers() <= maxPassengers){
+            if(plane.getPassengers() >= maxPassengers){
                 planeListAvailable.add(plane);
             }
         }

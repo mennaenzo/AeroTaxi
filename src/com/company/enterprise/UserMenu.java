@@ -15,13 +15,12 @@ public class UserMenu {
         String categoryPlane = plane.getClass().getSimpleName();
         String bestCategory = user.getBestCategory();
 
-        if(bestCategory.isEmpty()) {
+        if(bestCategory == null) {
             user.setBestCategory(categoryPlane);
         }
         else if(checkCategory(user, categoryPlane)){
             user.setBestCategory(categoryPlane);
         }
-
         return flight;
     }
 
