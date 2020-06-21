@@ -259,22 +259,20 @@ public class SystemAero {
     }
 
     public Plane planeAvailable(Date date, int maxPassengers){
-        ArrayList<Plane> listPlaneAvailable = new ArrayList<>();
-        Plane chosePlane = new Plane();
-        ScriptObjectMirror availble;
+        ArrayList<Plane> listPlaneAvailable;
+        Plane chosenPlane = new Plane();
         if(!available.isEmpty()) {
             if (available.containsKey(date)) {
                 listPlaneAvailable = available.get(date);
-                chosePlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
-                return  chosePlane;
+                chosenPlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
+                return  chosenPlane;
                 }
             }
         else{
             listPlaneAvailable = Storage.getMaxPlane(maxPassengers);
-            chosePlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
-
+            chosenPlane = choosePlanesAvailable(listPlaneAvailable,maxPassengers);
         }
-        return chosePlane;
+        return chosenPlane;
     }
 
     public Plane choosePlanesAvailable(ArrayList<Plane> listPlane, int maxPassengers){
@@ -305,6 +303,5 @@ public class SystemAero {
                     return  null;
                 }
         }
-
     }
 }

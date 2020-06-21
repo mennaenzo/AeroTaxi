@@ -8,6 +8,10 @@ public class Plane implements Serializable {
     private double pricePerKm;
     private int passengers;
 
+    public Plane() {
+
+    }
+
     @Override
     public String toString() {
         return "Plane{" +
