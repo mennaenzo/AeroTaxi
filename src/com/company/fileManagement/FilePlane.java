@@ -32,47 +32,45 @@ public class FilePlane extends Storage{
 
     // Escribe en un archivo un ArrayList
     public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
-
         ArrayList<ArrayList<Plane>> completeList = new ArrayList<>();
-        //completeList = FilePlane.readFilePlane(pathname);
         ArrayList<Plane> saveSilver = new ArrayList<>();
         ArrayList<Plane> saveBronze = new ArrayList<>();
         ArrayList<Plane> saveGold = new ArrayList<>();
 
-      for(int i = 0;i < xSave.size(); i++) {
-          if (xSave.get(i) instanceof Bronze) {
-              saveBronze.add(xSave.get(i));
-          }
-          if (xSave.get(i) instanceof Silver) {
-              saveSilver.add(xSave.get(i));
-          }
-          if (xSave.get(i) instanceof Gold) {
-              saveGold.add(xSave.get(i));
-          }
-      }
-      completeList.add(0,saveBronze);
-      completeList.add(1,saveSilver);
-      completeList.add(2,saveGold);
+        for (Plane plane : xSave) {
+            if (plane instanceof Bronze) {
+                saveBronze.add(plane);
+            }
+            if (plane instanceof Silver) {
+                saveSilver.add(plane);
+            }
+            if (plane instanceof Gold) {
+                saveGold.add(plane);
+            }
+        }
+        completeList.add(0,saveBronze);
+        completeList.add(1,saveSilver);
+        completeList.add(2,saveGold);
 
-      BufferedWriter bWriter = null;
+        BufferedWriter bWriter = null;
 
-      try {
-          FileWriter fileWriter = new FileWriter(pathname);
-          bWriter = new BufferedWriter(fileWriter);
-          Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Crea un gson con un diseño(de  lo que se imprime en consola) mas legible
-          gson.toJson(completeList, completeList.getClass(), bWriter); // Escribe en el archivo
-          System.out.println("La operacion de escritura en el archivo " + pathname + " se realizo correctamente.");
-      } catch (IOException e) {
-          System.out.println("Se produjo el siguiente error al escribir el archivo:" + e.getMessage());
-      } finally {
-          try {
-              if (bWriter != null) {
-                  bWriter.close();  //Se cierra el BufferedReader si es que contiene informacion.
+        try {
+            FileWriter fileWriter = new FileWriter(pathname);
+            bWriter = new BufferedWriter(fileWriter);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Crea un gson con un diseño(de  lo que se imprime en consola) mas legible
+            gson.toJson(completeList, completeList.getClass(), bWriter); // Escribe en el archivo
+            System.out.println("La operacion de escritura en el archivo " + pathname + " se realizo correctamente.");
+        } catch (IOException e) {
+              System.out.println("Se produjo el siguiente error al escribir el archivo:" + e.getMessage());
+        } finally {
+            try {
+                if (bWriter != null) {
+                    bWriter.close();  //Se cierra el BufferedReader si es que contiene informacion.
               }
-          } catch (IOException e) {
-              System.out.println("No se pudo cerrar el arcivo" + pathname + " correctamente, error: " + e.getMessage());
-          }
-      }
+            } catch (IOException e) {
+                System.out.println("No se pudo cerrar el arcivo" + pathname + " correctamente, error: " + e.getMessage());
+            }
+        }
     }
 
 
@@ -110,7 +108,7 @@ public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
  */
 
     // A partir de una ruta, lee un archivo.
-    public static ArrayList<ArrayList<Plane>> readFilePlane(String pathname) {
+    public static ArrayList<Plane> readFilePlane(String pathname) {
         ArrayList<ArrayList<Plane>> list = new ArrayList<>();
         BufferedReader bReader = null;
         File file = new File(pathname);
@@ -138,29 +136,26 @@ public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
         else{
             System.out.println("El archivo no contiene datos");
         }
-        ArrayList<ArrayList<Plane>> listCast = new ArrayList<>();
-        // Falta terminar
-       /*  ArrayList<Bronze> listBronce = new ArrayList<>();
-        ArrayList<Silver> listSilver = new ArrayList<>();
-        ArrayList<Gold> listGold = new ArrayList<>();
-       if(list != null){
+        ArrayList<Plane> listCast = new ArrayList<>();
+        if(list != null){
             for(int i = 0; i < list.size(); i++) {
                 for (int j = 0;  list.get(i).get(j) != null; j++){
                     if(i == 0){
-                        listCast.add(0, (Plane) list.get(0).get(0));
+                        Bronze bronze = (Bronze) list.get(i).get(j);
+                        listCast.add(bronze);
                     }
                     if(i == 1){
-                        listCast.get(1).add((Plane) list.get(i).get(j));
+                        Silver silver = (Silver) list.get(i).get(j);
+                        listCast.add(silver);
                     }
                     if(i == 2){
-                       listCast.get(2).add((Plane) list.get(i).get(j));
+                        Gold gold = (Gold) list.get(i).get(j);
+                        listCast.add(gold);
                     }
-
                 }
             }
         }
-*/
-        return list; // Devuelve el contenido del archivo
+        return listCast;
     }
 
     /*

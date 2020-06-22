@@ -60,14 +60,13 @@ public abstract class Storage {
                 System.out.println("\t" + i + " - " + user.getName() + " " + user.getSurname());
                 i++;
             }
+            System.out.println("\t" + i + " - Exit");
             Scanner scanner = new Scanner(System.in);
             System.out.println("Select number user: ");
             int option = scanner.nextInt();
             if(option <= users.size()){
                 return users.get(option-1);
             }
-            else
-                System.out.println("NUMBER ERROR");
         }
         else
             System.out.println("No users!");
@@ -102,7 +101,7 @@ public abstract class Storage {
     public static void firstData(){
         File filePlane = new File(FilePath.PLANES.getPathname());
         if(filePlane.exists()) {
-            //planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+            planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
         }
         else {
             FilePlane filePlane1 = new FilePlane();
