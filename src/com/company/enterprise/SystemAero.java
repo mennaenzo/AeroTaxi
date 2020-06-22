@@ -11,30 +11,66 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SystemAero {
-    private HashMap<Date, ArrayList<Flight>> fligths;
 
     public SystemAero() {
-        fligths = new HashMap<>();
     }
 
-    public HashMap<Date, ArrayList<Flight>> getFligths() {
-        return fligths;
+    public void menu(){
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
+        int option;
+        setUp();
+        while(!exit) {
+            System.out.println("- Users -");
+            User user = Storage.selectUser();
+            if (user != null) {
+                System.out.println("- AeroTaxi Menu -" + " (User: " + user.getName() + ")");
+                System.out.println("\t1 - Reserve Flight");
+                System.out.println("\t2 - Cancel Flight");
+//            System.out.println("\t3 - All Flights");
+//            System.out.println("\t4 - All Users");
+                System.out.println("\t3 - Change User");
+                System.out.println("\t4 - Exit");
+                option = scanner.nextInt();
+                switch (option) {
+                    case 1:
+                        reserve(user);
+                        break;
+                    case 2:
+                        UserMenu.cancelFlight(user);
+                    case 3:
+                        break;
+                    case 4:
+                        // Escritura de archivos
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Please select a number between 1 and 5.");
+                }
+            }
+            else
+                exit = true;
+        }
     }
 
-    public void setFligths(HashMap<Date, ArrayList<Flight>> fligths) {
-        this.fligths = fligths;
+    private void reserve(User user){
+        Flight newFlight = checkIn(user);
+        if(newFlight != null) {
+            if(Storage.getFlights().containsKey(newFlight.getDate()))
+                Storage.addFlight(newFlight, Storage.getFlights().get(newFlight.getDate()));
+            else
+                Storage.addFlight(newFlight);
+        }
+        else
+            System.out.println("The flight was canceled.");
     }
 
     public void setUp() {
-        //Storage.firstData();
-        ArrayList<Flight> flights = new ArrayList<>();
-        for (User user : Storage.getUsers()) {
-            flights.add(checkIn(user));
-        }
-        FileFlight.writeFileFlight(flights, FilePath.FLIGHTS.getPathname());
+        Storage.firstData();
     }
 
     private Flight checkIn(User user){
+        System.out.println("- CheckIn - Welcome " + user.getName());
         System.out.print("Select Date(DD/MM/YY HH:MM): ");
         Scanner scanner = new Scanner(System.in);
         String scannerDate = scanner.nextLine();
@@ -63,6 +99,8 @@ public class SystemAero {
                     System.out.println("2 - Cancel");
                     return validateDecision(scanner,journey,plane,companions,date,user);
                 }
+                else
+                    System.out.println("We don't have planes available for that passenger capacity.");
             }
         }
         return null;
@@ -228,8 +266,8 @@ public class SystemAero {
 
     public Plane planeAvailable(Date date, int maxPassengers){
         ArrayList<Plane> listPlaneAvailable;
-        if(!fligths.isEmpty()) {
-            if (fligths.containsKey(date)) {
+        if(!Storage.getFlights().isEmpty()) {
+            if (Storage.getFlights().containsKey(date)) {
                 //listPlaneAvailable = fligths.get(date);
                 //return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
                 }
@@ -273,8 +311,8 @@ public class SystemAero {
 
     public int getMax(Date date) {
         int max = 0;
-        if(!fligths.isEmpty()) {
-            if (!fligths.containsKey(date)) {
+        if(!Storage.getFlights().isEmpty()) {
+            if (!Storage.getFlights().containsKey(date)) {
                 ArrayList<Plane> planes = Storage.getPlanes();
                 for (Plane plane : planes) {
                     if (plane.getPassengers() > max)
@@ -282,7 +320,7 @@ public class SystemAero {
                 }
             } else {
                 ArrayList<Plane> planesHash = new ArrayList<>();
-                for (Flight flight : fligths.get(date)) {
+                for (Flight flight : Storage.getFlights().get(date)) {
                     planesHash.add(flight.getPlane());
                 }
                 for (Plane planeAvailable : Storage.planesAvailable(planesHash)) {

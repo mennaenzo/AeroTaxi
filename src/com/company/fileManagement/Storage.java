@@ -10,11 +10,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public abstract class Storage {
-    private static ArrayList<Plane> planes;
-    private static ArrayList<User> users;
-    private static ArrayList<Flight> fligts;
+    private static ArrayList<Plane> planes = new ArrayList<>();
+    private static ArrayList<User> users = new ArrayList<>();
+    private static HashMap<Date, ArrayList<Flight>> flights = new HashMap<>();
 
     public static void setPlanes(ArrayList<Plane> planes) {
         Storage.planes = planes;
@@ -24,14 +27,18 @@ public abstract class Storage {
         Storage.users = users;
     }
 
-    public static void setFligts(ArrayList<Flight> fligts) {
-        Storage.fligts = fligts;
+    public static void addFlight(Flight flight){
+        ArrayList<Flight> flightsHash = new ArrayList<>();
+        flightsHash.add(flight);
+        flights.put(flight.getDate(),flightsHash);
+    }
+
+    public static void addFlight(Flight flight, ArrayList<Flight> flightsHash){
+        flightsHash.add(flight);
+        flights.put(flight.getDate(),flightsHash);
     }
 
     public Storage() {
-        planes = new ArrayList<>();
-        users = new ArrayList<>();
-        fligts = new ArrayList<>();
     }
 
     public static ArrayList<Plane> getPlanes() {
@@ -42,8 +49,29 @@ public abstract class Storage {
         return users;
     }
 
-    public static ArrayList<Flight> getFligts() {
-        return fligts;
+    public static HashMap<Date, ArrayList<Flight>> getFlights() {
+        return flights;
+    }
+
+    public static User selectUser() {
+        if(!users.isEmpty()){
+            int i = 1;
+            for (User user : users) {
+                System.out.println("\t" + i + " - " + user.getName() + " " + user.getSurname());
+                i++;
+            }
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Select number user: ");
+            int option = scanner.nextInt();
+            if(option <= users.size()){
+                return users.get(option-1);
+            }
+            else
+                System.out.println("NUMBER ERROR");
+        }
+        else
+            System.out.println("No users!");
+        return null;
     }
 
     public boolean createFile(String pathname) {
@@ -92,8 +120,16 @@ public abstract class Storage {
         }
 
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
-        if(fileFlights.exists())
-            fligts = FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname());
+        if(fileFlights.exists()) {
+            for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
+                if(flights.containsKey(flight.getDate())){
+                    addFlight(flight, flights.get(flight.getDate()));
+                }
+                else{
+                    addFlight(flight);
+                }
+            }
+        }
         else {
             FileFlight fileFlight1 = new FileFlight();
             fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
