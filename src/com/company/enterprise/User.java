@@ -88,5 +88,10 @@ public class User {
             return 0;
     }
 
-
+    public void listFlights(){
+        int i = 1;
+        for (Flight flight : checkIn) {
+            System.out.println(i + " - " + flight.toString());
+        }
+    }
 }

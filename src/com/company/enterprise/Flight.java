@@ -76,4 +76,16 @@ public class Flight {
     public void setCost(float cost) {
         this.cost = cost;
     }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "date=" + date +
+                ", journey=" + journey +
+                ", plane=" + plane +
+                ", user=" + user +
+                ", passengers=" + passengers +
+                ", cost=" + cost +
+                '}';
+    }
 }

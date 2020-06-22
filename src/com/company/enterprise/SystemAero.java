@@ -4,7 +4,6 @@ import com.company.enums.City;
 import com.company.enums.FilePath;
 import com.company.enums.Journey;
 import com.company.fileManagement.FileFlight;
-import com.company.fileManagement.FilePlane;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
 import java.text.ParseException;
@@ -12,44 +11,19 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SystemAero {
-    private HashMap<Date, ArrayList<Plane>> available;
+    private HashMap<Date, ArrayList<Flight>> fligths;
 
     public SystemAero() {
-        available = new HashMap<>();
-    }
-    public HashMap<Date, ArrayList<Plane>> getAvailable() {
-        return available;
+        fligths = new HashMap<>();
     }
 
-    public void setAvailable(HashMap<Date, ArrayList<Plane>> available) {
-        this.available = available;
+    public HashMap<Date, ArrayList<Flight>> getFligths() {
+        return fligths;
     }
 
-    public int getMaxPassengers(Date date) {
-
-        int max = 0;
-        if(!available.isEmpty()) {
-            if (!available.containsKey(date)) {
-                ArrayList<Plane> planes = Storage.getPlanes();
-                for (Plane plane : planes) {
-                    if (plane.getPassengers() > max)
-                        max = plane.getPassengers();
-                }
-            } else {
-                ArrayList<Plane> planes1 = available.get(date);
-                for (Plane plane : planes1) {
-                    if (plane.getPassengers() > max)
-                        max = plane.getPassengers();
-                }
-            }
-        }
-        else{
-            return Storage.getMaxPassengers();
-        }
-        return max;
+    public void setFligths(HashMap<Date, ArrayList<Flight>> fligths) {
+        this.fligths = fligths;
     }
-
-
 
     public void setUp() {
         //Storage.firstData();
@@ -59,7 +33,6 @@ public class SystemAero {
         }
         FileFlight.writeFileFlight(flights, FilePath.FLIGHTS.getPathname());
     }
-
 
     private Flight checkIn(User user){
         System.out.print("Select Date(DD/MM/YY HH:MM): ");
@@ -82,7 +55,7 @@ public class SystemAero {
                 Journey journey = Journey.compare(origin,destination);
                 System.out.println("Please enter the number of your companions");
                 int companions = scanner.nextInt();
-                int maxPassenger = getMaxPassengers(date);
+                int maxPassenger = getMax(date);
                 if(companions+1 <= maxPassenger){
                     Plane plane = planeAvailable(date, maxPassenger);
                     System.out.println("Cost $" + UserMenu.getCost(journey,plane,companions+1) + " - Plane " + plane.getModel() + ": ");
@@ -94,7 +67,6 @@ public class SystemAero {
         }
         return null;
     }
-
 
     public Flight validateDecision(Scanner scanner, Journey journey, Plane plane, int companions, Date date, User user) {
         int decision = scanner.nextInt();
@@ -256,10 +228,10 @@ public class SystemAero {
 
     public Plane planeAvailable(Date date, int maxPassengers){
         ArrayList<Plane> listPlaneAvailable;
-        if(!available.isEmpty()) {
-            if (available.containsKey(date)) {
-                listPlaneAvailable = available.get(date);
-                return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
+        if(!fligths.isEmpty()) {
+            if (fligths.containsKey(date)) {
+                //listPlaneAvailable = fligths.get(date);
+                //return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
                 }
             }
         else{
@@ -297,5 +269,31 @@ public class SystemAero {
                 return null;
             }
         }
+    }
+
+    public int getMax(Date date) {
+        int max = 0;
+        if(!fligths.isEmpty()) {
+            if (!fligths.containsKey(date)) {
+                ArrayList<Plane> planes = Storage.getPlanes();
+                for (Plane plane : planes) {
+                    if (plane.getPassengers() > max)
+                        max = plane.getPassengers();
+                }
+            } else {
+                ArrayList<Plane> planesHash = new ArrayList<>();
+                for (Flight flight : fligths.get(date)) {
+                    planesHash.add(flight.getPlane());
+                }
+                for (Plane planeAvailable : Storage.planesAvailable(planesHash)) {
+                    if (planeAvailable.getPassengers() > max)
+                        max = planeAvailable.getPassengers();
+                }
+            }
+        }
+        else{
+            return Storage.getMaxPassengers();
+        }
+        return max;
     }
 }

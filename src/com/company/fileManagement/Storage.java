@@ -73,8 +73,9 @@ public abstract class Storage {
 
     public static void firstData(){
         File filePlane = new File(FilePath.PLANES.getPathname());
-        if(filePlane.exists())
-            planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+        if(filePlane.exists()) {
+            //planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+        }
         else {
             FilePlane filePlane1 = new FilePlane();
             filePlane1.createFile(FilePath.PLANES.getPathname());
@@ -117,5 +118,15 @@ public abstract class Storage {
             }
         }
     return planeListAvailable;
+    }
+
+    public static ArrayList<Plane> planesAvailable(ArrayList<Plane> occupied){
+        ArrayList<Plane> planesAvailable = planes;
+        for (Plane plane : occupied) {
+            if(planes.contains(plane)){
+                planesAvailable.remove(plane);
+            }
+        }
+        return planesAvailable;
     }
 }
