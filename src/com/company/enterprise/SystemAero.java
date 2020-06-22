@@ -52,7 +52,7 @@ public class SystemAero {
 
 
     public void setUp() {
-        Storage.firstData();
+        //Storage.firstData();
         ArrayList<Flight> flights = new ArrayList<>();
         for (User user : Storage.getUsers()) {
             flights.add(checkIn(user));

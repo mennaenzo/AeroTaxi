@@ -42,11 +42,11 @@ public class Main {
         }
         System.out.println(dates);
 
-*/
         SystemAero test = new SystemAero();
         test.setUp();
 
-/*
+
+
             FilePlane filePlane = new FilePlane();
             FileUser fileUsers = new FileUser();
             FileFlight fileFlight = new FileFlight();
@@ -56,23 +56,25 @@ public class Main {
             fileFlight.createFile("files\\flights.json");
             ///  testeos  sobre el manejo de archivos en plane y user
 
-            Bronze learjet = new Bronze("Learjet 40", 2420, 300, 7, 859, "reaction");
-            Gold kingAir = new Gold("King Air 250", 1653, 301, 10, 574, "helice");
-            Silver pilatus = new Silver("Pilatus PC-12", 539, 301, 8, 500, "helice");
-            Gold falcon = new Gold("Falcon 7X", 14448, 301, 16, 990, "reaction1");
-            Silver g200 = new Silver("G200", 610, 301, 8, 900, "reaction");
-            Bronze cessna = new Bronze("Cessna 550", 589, 301, 8, 746, "reaction1");
-            //filePlane.emptyFile("files\\planes.json");  // vacia el contenido del archivo
+         Bronze learjet = new Bronze(1,"Learjet 40", 2420, 300, 7, 859, "reaction");
+            Gold kingAir = new Gold(2,"King Air 250", 1653, 301, 10, 574, "helice");
+            Silver pilatus = new Silver(3,"Pilatus PC-12", 539, 301, 8, 500, "helice");
+     */       Gold falcon = new Gold(4,"Falcon 7X", 14448, 301, 16, 990, "reaction1");
+            Silver g200 = new Silver(5,"G200", 610, 301, 8, 900, "reaction");
+            Bronze cessna = new Bronze(7,"Cessna 550", 589, 301, 8, 746, "reaction1");
+
             ArrayList<Plane> planeListSave = new ArrayList<>();
-            planeListSave.add(learjet);
-            planeListSave.add(kingAir);
-            planeListSave.add(pilatus);
             planeListSave.add(falcon);
             planeListSave.add(g200);
             planeListSave.add(cessna);
+            FilePlane.writeFilePlane(planeListSave,FilePath.PLANES.getPathname());
+            ArrayList<ArrayList<Plane>> test = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+        System.out.println(test.get(0).get(0).getClass().getSimpleName());
+         //   SystemAero test = new SystemAero();
+            //test.setUp();
+            //ArrayList<User> testFileUser.readFileUser(FilePath.USERS.getPathname());
 
-            filePlane.writeFilePlane(planeListSave, FilePath.PLANES.getPathname());
-
+  /*
             User enzo = new User("Enzo","Menna",39341231,26);
             User martin = new User("Martin","Gomez Vega",41429427,21);
             ArrayList<User> userList = new ArrayList<>();
