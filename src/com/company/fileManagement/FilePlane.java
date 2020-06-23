@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class FilePlane extends Storage{
+public class FilePlane extends Storage {
 
     public FilePlane() {
     }
@@ -28,7 +28,6 @@ public class FilePlane extends Storage{
             }
         return false;
     }*/
-
 
     // Escribe en un archivo un ArrayList
     public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
@@ -48,12 +47,11 @@ public class FilePlane extends Storage{
                 saveGold.add(plane);
             }
         }
-        completeList.add(0,saveBronze);
-        completeList.add(1,saveSilver);
-        completeList.add(2,saveGold);
+        completeList.add(0, saveBronze);
+        completeList.add(1, saveSilver);
+        completeList.add(2, saveGold);
 
         BufferedWriter bWriter = null;
-
         try {
             FileWriter fileWriter = new FileWriter(pathname);
             bWriter = new BufferedWriter(fileWriter);
@@ -61,18 +59,17 @@ public class FilePlane extends Storage{
             gson.toJson(completeList, completeList.getClass(), bWriter); // Escribe en el archivo
             System.out.println("La operacion de escritura en el archivo " + pathname + " se realizo correctamente.");
         } catch (IOException e) {
-              System.out.println("Se produjo el siguiente error al escribir el archivo:" + e.getMessage());
+            System.out.println("Se produjo el siguiente error al escribir el archivo:" + e.getMessage());
         } finally {
             try {
                 if (bWriter != null) {
                     bWriter.close();  //Se cierra el BufferedReader si es que contiene informacion.
-              }
+                }
             } catch (IOException e) {
                 System.out.println("No se pudo cerrar el arcivo" + pathname + " correctamente, error: " + e.getMessage());
             }
         }
     }
-
 
 /*
 public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
@@ -106,24 +103,40 @@ public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
         }
     }
  */
-
     // A partir de una ruta, lee un archivo.
     public static ArrayList<Plane> readFilePlane(String pathname) {
         ArrayList<ArrayList<Plane>> list = new ArrayList<>();
+        ArrayList<Plane> listCast = new ArrayList<>();
         BufferedReader bReader = null;
         File file = new File(pathname);
-        if(file.length()!=0){
+        if (file.length() != 0) {
             try {
                 bReader = new BufferedReader(new FileReader(new File(pathname)));
                 Gson gson = new Gson();
                 // String planes = gson.toJson(FilePath.PLANES.getPathname());
                 Type typeArrayPlanes = new TypeToken<ArrayList<ArrayList<Plane>>>() {}.getType(); // Se hace una referencia del tipo de dato, en este caso un ArrayList.
                 list = gson.fromJson(bReader, typeArrayPlanes); // list almacena un ArrayList con a informacion del archivo.
+                for (int i = 0; i < list.size(); i++) {
+                    for (int j = 0; j< list.get(i).size(); j++) {
+                        Plane plane = (list.get(i).get(j));
+                        if (i == 0) {
+                            Bronze bronze = new Bronze(plane.getModel(), plane.getFuel(), plane.getPricePerKm(), plane.getPassengers(), plane.getSpeed(), plane.getPropulsion());
+                            listCast.add(bronze);
+                        }
+                        if (i == 1) {
+                            Silver silver = new Silver(plane.getModel(), plane.getFuel(), plane.getPricePerKm(), plane.getPassengers(), plane.getSpeed(), plane.getPropulsion());
+                            listCast.add(silver);
+                        }
+                        if (i == 2) {
+                            Gold gold = new Gold(plane.getModel(), plane.getFuel(), plane.getPricePerKm(), plane.getPassengers(), plane.getSpeed(), plane.getPropulsion());
+                            listCast.add(gold);
+                        }
+                    }
+                }
                 System.out.println("La operacion de lectura se realizo correctamente.");
             } catch (IOException e) {
                 System.out.println("Se produjo el siguiente error al leer el archivo: " + e.getMessage());
-            }
-            finally {
+            } finally {
                 try {
                     if (bReader != null) {
                         bReader.close();
@@ -132,28 +145,8 @@ public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
                     e.printStackTrace();
                 }
             }
-        }
-        else{
+        } else {
             System.out.println("El archivo no contiene datos");
-        }
-        ArrayList<Plane> listCast = new ArrayList<>();
-        if(list != null){
-            for(int i = 0; i < list.size(); i++) {
-                for (int j = 0;  list.get(i).get(j) != null; j++){
-                    if(i == 0){
-                        Bronze bronze = (Bronze) list.get(i).get(j);
-                        listCast.add(bronze);
-                    }
-                    if(i == 1){
-                        Silver silver = (Silver) list.get(i).get(j);
-                        listCast.add(silver);
-                    }
-                    if(i == 2){
-                        Gold gold = (Gold) list.get(i).get(j);
-                        listCast.add(gold);
-                    }
-                }
-            }
         }
         return listCast;
     }

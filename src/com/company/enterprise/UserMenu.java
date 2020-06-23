@@ -54,7 +54,7 @@ public class UserMenu {
         Date flightTime = cancelFlight.getDate();
         SimpleDateFormat simpleMinutes = new SimpleDateFormat("mm");
         int minutes = Integer.parseInt(simpleMinutes.format(getDifferenceBetwenDates(today,flightTime)));
-        return minutes >= 60;
+        return minutes >= 1440;
     }
 
     private static Date getDifferenceBetwenDates(Date hourToday, Date hourFlight) {

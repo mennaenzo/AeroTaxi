@@ -40,7 +40,7 @@ public class Main {
         System.out.println(date);
         SimpleDateFormat simpleDate = new SimpleDateFormat("HH:mm");
         System.out.println(simpleDate.format(date));
-*/
+
 /*
         Plane planeGold = new Gold("King Air 250", 1653, 301, 10, 574, "helice");
         System.out.println(planeGold.getRate());

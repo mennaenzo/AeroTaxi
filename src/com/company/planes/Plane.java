@@ -6,26 +6,6 @@ public class Plane implements Serializable {
     private String model;
     private double fuel;
     private double pricePerKm;
-    private int passengers;
-
-    public Plane() {
-
-    }
-
-    @Override
-    public String toString() {
-        return "Plane{" +
-                "model='" + model + '\'' +
-                ", fuel=" + fuel +
-                ", pricePerKm=" + pricePerKm +
-                ", passengers=" + passengers +
-                ", speed=" + speed +
-                ", propulsion='" + propulsion + '\'' +
-                '}';
-    }
-
-    private double speed;
-    private String propulsion;
 
     public Plane(String model, double fuel, double pricePerKm, int passengers, double speed, String propulsion) {
         this.model = model;
@@ -35,6 +15,27 @@ public class Plane implements Serializable {
         this.speed = speed;
         this.propulsion = propulsion;
     }
+
+    private int passengers;
+
+    @Override
+    public String toString() {
+        return "Plane{" +
+                ", model='" + model + '\'' +
+                ", fuel=" + fuel +
+                ", pricePerKm=" + pricePerKm +
+                ", passengers=" + passengers +
+                ", speed=" + speed +
+                ", propulsion='" + propulsion + '\'' +
+                '}';
+    }
+
+    public Plane() {
+
+    }
+
+    private double speed;
+    private String propulsion;
 
     public String getModel() {
         return model;

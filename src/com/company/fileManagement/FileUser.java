@@ -64,9 +64,8 @@ public class FileUser extends Storage {
                 bReader = new BufferedReader(new FileReader(new File(pathname)));
                 Gson gson = new Gson();
                 // String planes = gson.toJson(FilePath.PLANES.getPathname());
-                Type typeArrayPlanes = new TypeToken<ArrayList<User>>() {
-                }.getType(); // Se hace una referencia del tipo de dato, en este caso un ArrayList.
-                list = gson.fromJson(bReader, typeArrayPlanes); // list almacena un ArrayList con a informacion del archivo.
+                Type typeArrayUsers = new TypeToken<ArrayList<User>>() {}.getType(); // Se hace una referencia del tipo de dato, en este caso un ArrayList.
+                list = gson.fromJson(bReader, typeArrayUsers); // list almacena un ArrayList con a informacion del archivo.
                 System.out.println("La operacion de lectura se realizo correctamente.");
 
 

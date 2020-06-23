@@ -1,18 +1,18 @@
 package com.company.fileManagement;
 
 import com.company.enterprise.Flight;
+import com.company.enterprise.SystemAero;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.planes.Plane;
+import org.omg.CORBA.DATA_CONVERSION;
 
+import java.awt.datatransfer.FlavorListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public abstract class Storage {
     private static ArrayList<Plane> planes = new ArrayList<>();
@@ -27,18 +27,30 @@ public abstract class Storage {
         Storage.users = users;
     }
 
-    public static void addFlight(Flight flight){
-        ArrayList<Flight> flightsHash = new ArrayList<>();
-        flightsHash.add(flight);
-        flights.put(flight.getDate(),flightsHash);
+    public void SaveFlightsInFile() {
+        //FileFlight.writeFileFlight();
     }
 
-    public static void addFlight(Flight flight, ArrayList<Flight> flightsHash){
+    public static void addFlight(Flight flight) {
+        ArrayList<Flight> flightsHash = new ArrayList<>();
         flightsHash.add(flight);
-        flights.put(flight.getDate(),flightsHash);
+        flights.put(flight.getDate(), flightsHash);
+    }
+
+    public static ArrayList<Flight> getListFlghtByDate(Date date) {
+        return flights.get(date);
+    }
+
+    public static void addFlight(Flight flight, ArrayList<Flight> flightsHash) {
+        flightsHash.add(flight);
+        flights.put(flight.getDate(), flightsHash);
     }
 
     public Storage() {
+    }
+
+    public static void setFlights(HashMap<Date, ArrayList<Flight>> flights) {
+        Storage.flights = flights;
     }
 
     public static ArrayList<Plane> getPlanes() {
@@ -54,7 +66,7 @@ public abstract class Storage {
     }
 
     public static User selectUser() {
-        if(!users.isEmpty()){
+        if (!users.isEmpty()) {
             int i = 1;
             for (User user : users) {
                 System.out.println("\t" + i + " - " + user.getName() + " " + user.getSurname());
@@ -64,11 +76,10 @@ public abstract class Storage {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Select number user: ");
             int option = scanner.nextInt();
-            if(option <= users.size()){
-                return users.get(option-1);
+            if (option <= users.size()) {
+                return users.get(option - 1);
             }
-        }
-        else
+        } else
             System.out.println("No users!");
         return null;
     }
@@ -98,19 +109,18 @@ public abstract class Storage {
         }
     }
 
-    public static void firstData(){
+    public static void firstData() {
         File filePlane = new File(FilePath.PLANES.getPathname());
-        if(filePlane.exists()) {
+        if (filePlane.exists()) {
             planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
-        }
-        else {
+        } else {
             FilePlane filePlane1 = new FilePlane();
             filePlane1.createFile(FilePath.PLANES.getPathname());
             setPlanes(FilePlane.createDataPlane(FilePath.PLANES.getPathname()));
         }
 
         File fileUser = new File(FilePath.USERS.getPathname());
-        if(fileUser.exists())
+        if (fileUser.exists())
             users = FileUser.readFileUser(FilePath.USERS.getPathname());
         else {
             FileUser fileUser1 = new FileUser();
@@ -119,20 +129,41 @@ public abstract class Storage {
         }
 
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
-        if(fileFlights.exists()) {
-            for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
-                if(flights.containsKey(flight.getDate())){
-                    addFlight(flight, flights.get(flight.getDate()));
+        if (fileFlights.exists()) {
+            if (FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname()).size() > 0) {
+                System.out.println("null");
+                for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
+                    if (flights.containsKey(flight.getDate())) {
+                        addFlight(flight, flights.get(flight.getDate()));
+                    } else {
+                        addFlight(flight);
+                    }
                 }
-                else{
-                    addFlight(flight);
-                }
+            } else {
+                FileFlight fileFlight1 = new FileFlight();
+                fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
             }
         }
-        else {
-            FileFlight fileFlight1 = new FileFlight();
-            fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
+    }
+
+    public static void printUsers(){
+        System.out.println("\t--- Client portfolio ---");
+        for (User user: getUsers()) {
+            System.out.println("User: " + user.toString());
         }
+        System.out.println("Total Customers" + getUsers().size());
+    }
+
+    public static ArrayList<Flight> getFlightsFromHashMap(HashMap<Date, ArrayList<Flight>> getFlights){
+        ArrayList<Flight> arrayFlights = new ArrayList<>();
+        Map<Date, ArrayList<Flight>> map = getFlights;
+        int i = 0;
+
+        for (Map.Entry<Date, ArrayList<Flight>> entry : map.entrySet()) {  //Recorre el HashMap
+            arrayFlights.add(entry.getValue().get(i));
+            i++;
+        }
+        return arrayFlights;
     }
 
     public static int getMaxPassengers(){

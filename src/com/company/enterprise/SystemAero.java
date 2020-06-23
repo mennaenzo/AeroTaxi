@@ -6,9 +6,16 @@ import com.company.enums.Journey;
 import com.company.fileManagement.FileFlight;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
+
+import javax.swing.plaf.synth.SynthRootPaneUI;
+import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.company.fileManagement.Storage.setFlights;
 
 public class SystemAero {
 
@@ -21,18 +28,21 @@ public class SystemAero {
         int option;
         setUp();
         while(!exit) {
+            System.out.println("\t0 - Administrator");
             System.out.println("- Users -");
             User user = Storage.selectUser();
             if (user != null) {
                 System.out.println("- AeroTaxi Menu -" + " (User: " + user.getName() + ")");
                 System.out.println("\t1 - Reserve Flight");
                 System.out.println("\t2 - Cancel Flight");
-//            System.out.println("\t3 - All Flights");
+//            System.out.println("\t3  All Flights");
 //            System.out.println("\t4 - All Users");
                 System.out.println("\t3 - Change User");
                 System.out.println("\t4 - Exit");
                 option = scanner.nextInt();
                 switch (option) {
+                    case 0:
+                        viewAdministrator();
                     case 1:
                         reserve(user);
                         break;
@@ -53,13 +63,33 @@ public class SystemAero {
         }
     }
 
+    private void viewAdministrator(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\t1 - Client list ");
+        System.out.println("\t2 - View Flights on a date ");
+        int option = scanner.nextInt();
+        switch (option){
+            case 1:
+               Storage.printUsers();
+            case 2:
+                System.out.println("Please enter the date to see the flights:");
+                Date date = checkDate(scanner.nextLine());
+                Storage.getListFlghtByDate(date);
+        }
+    }
+
+
+
     private void reserve(User user){
         Flight newFlight = checkIn(user);
         if(newFlight != null) {
             if(Storage.getFlights().containsKey(newFlight.getDate()))
                 Storage.addFlight(newFlight, Storage.getFlights().get(newFlight.getDate()));
-            else
+            else {
                 Storage.addFlight(newFlight);
+                ArrayList<Flight> flightArray = Storage.getFlightsFromHashMap(Storage.getFlights());
+                FileFlight.writeFileFlight(flightArray,FilePath.FLIGHTS.getPathname());  // Escribiria cada vez que hago una reserva
+        }
         }
         else
             System.out.println("The flight was canceled.");
@@ -122,7 +152,7 @@ public class SystemAero {
         return null;
     }
 
-    private Date checkDate(String scannerDate){
+    private  Date checkDate(String scannerDate){
         SimpleDateFormat simpleDate = new SimpleDateFormat();
         Date date = new Date();
 
