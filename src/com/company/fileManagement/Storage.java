@@ -5,7 +5,6 @@ import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.enums.Journey;
 import com.company.planes.Plane;
-import com.sun.xml.internal.ws.binding.FeatureListUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
