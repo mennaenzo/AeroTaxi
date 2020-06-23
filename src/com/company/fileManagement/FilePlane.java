@@ -185,6 +185,7 @@ public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
         return list; // Devuelve el contenido del archivo
     }
      */
+
     public static ArrayList<Plane> createDataPlane(String pathname){
         ArrayList<Plane> listSave = new ArrayList<>();
         Bronze learjet = new Bronze("Learjet 40", 2420, 300, 7, 859, "reaction");
@@ -202,6 +203,7 @@ public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
         FilePlane.writeFilePlane(listSave, pathname);
         return listSave;
     }
+
     @Override
     public boolean createFile(String pathname) {
         return super.createFile(pathname);

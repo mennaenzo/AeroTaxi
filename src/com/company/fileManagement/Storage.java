@@ -100,7 +100,6 @@ public abstract class Storage {
     // Vacia toda la informacion que hay en el archivo
 
     public void emptyFile(String pathname) {
-        // Vacia el archivo que se manda por parametro, si es que existe el mismo
         File file = new File(pathname);
         if (file.exists()) {
             try {

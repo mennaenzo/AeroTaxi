@@ -98,7 +98,7 @@ public class FileUser extends Storage {
         return listSave;
     }
 
-    public boolean checkData(ArrayList<User> userList) {  //por arametro mando la list que retorna el readFile
+    public boolean checkData(ArrayList<User> userList) {
         ArrayList<User> firsList = FileUser.createDataUser(FilePath.USERS.getPathname());
         for (User user : userList) {
             for (User userCompare : firsList) {
