@@ -13,9 +13,9 @@ public class UserMenu {
     public UserMenu() {
     }
 
-    public static Flight confirmFligth(Date date, Journey journey, Plane plane, User user, int passengers){
+    public static Flight confirmFlight(Date date, Journey journey, Plane plane, User user, int passengers){
         Flight flight = new Flight(date, journey, plane, user.getName(), passengers, getCost(journey, plane, passengers));
-        user.addTrips(flight);
+        user.addCheckIn(flight);
         String categoryPlane = plane.getClass().getSimpleName();
         String bestCategory = user.getBestCategory();
 
