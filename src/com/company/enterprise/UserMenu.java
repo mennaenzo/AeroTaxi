@@ -14,7 +14,7 @@ public class UserMenu {
     }
 
     public static Flight confirmFligth(Date date, Journey journey, Plane plane, User user, int passengers){
-        Flight flight = new Flight(date, journey, plane, user, passengers, getCost(journey, plane, passengers));
+        Flight flight = new Flight(date, journey, plane, user.getName(), passengers, getCost(journey, plane, passengers));
         user.addTrips(flight);
         String categoryPlane = plane.getClass().getSimpleName();
         String bestCategory = user.getBestCategory();
@@ -28,7 +28,7 @@ public class UserMenu {
         return flight;
     }
 
-    public static boolean cancelFlight(User user){
+    public static void cancelFlight(User user){
         if(!user.getCheckIn().isEmpty()){
             System.out.println("Choose the flight to cancel: ");
             user.listFlights();
@@ -37,7 +37,6 @@ public class UserMenu {
             if(option <= user.getCheckIn().size()+1){
                 if(inTime(user.getCheckIn().get(option-1))) {
                     user.getCheckIn().remove(option - 1);
-                    return true;
                 }
                 else
                     System.out.println("The flight cannot be canceled with less than 24 hours.");
@@ -46,7 +45,8 @@ public class UserMenu {
                 System.out.println("NUMBER ERROR");
             }
         }
-        return false;
+        else
+            System.out.println("You don't have flights.");
     }
 
     public static boolean inTime(Flight cancelFlight){

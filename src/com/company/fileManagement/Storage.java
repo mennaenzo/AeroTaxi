@@ -5,9 +5,6 @@ import com.company.enterprise.SystemAero;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.planes.Plane;
-import org.omg.CORBA.DATA_CONVERSION;
-
-import java.awt.datatransfer.FlavorListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,6 +24,12 @@ public abstract class Storage {
         Storage.users = users;
     }
 
+    public static void listFlights(ArrayList<Flight> listFlightByDate) {
+        for (Flight flight : listFlightByDate) {
+            System.out.println(flight.toString());
+        }
+    }
+
     public void SaveFlightsInFile() {
         //FileFlight.writeFileFlight();
     }
@@ -37,7 +40,7 @@ public abstract class Storage {
         flights.put(flight.getDate(), flightsHash);
     }
 
-    public static ArrayList<Flight> getListFlghtByDate(Date date) {
+    public static ArrayList<Flight> getListFlightByDate(Date date) {
         return flights.get(date);
     }
 
@@ -67,7 +70,7 @@ public abstract class Storage {
 
     public static User selectUser() {
         if (!users.isEmpty()) {
-            int i = 1;
+            int i = 0;
             for (User user : users) {
                 System.out.println("\t" + i + " - " + user.getName() + " " + user.getSurname());
                 i++;
@@ -76,8 +79,8 @@ public abstract class Storage {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Select number user: ");
             int option = scanner.nextInt();
-            if (option <= users.size()) {
-                return users.get(option - 1);
+            if ((option >= 0) && (option <= (users.size())-1)) {
+                return users.get(option);
             }
         } else
             System.out.println("No users!");
@@ -131,7 +134,6 @@ public abstract class Storage {
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
         if (fileFlights.exists()) {
             if (FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname()).size() > 0) {
-                System.out.println("null");
                 for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
                     if (flights.containsKey(flight.getDate())) {
                         addFlight(flight, flights.get(flight.getDate()));
@@ -139,29 +141,29 @@ public abstract class Storage {
                         addFlight(flight);
                     }
                 }
-            } else {
-                FileFlight fileFlight1 = new FileFlight();
-                fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
             }
+        }
+        else {
+            FileFlight fileFlight1 = new FileFlight();
+            fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
         }
     }
 
     public static void printUsers(){
-        System.out.println("\t--- Client portfolio ---");
-        for (User user: getUsers()) {
-            System.out.println("User: " + user.toString());
+        System.out.println("- Clients -");
+        for (User user: users) {
+            System.out.println("\tUser: " + user.toString());
         }
-        System.out.println("Total Customers" + getUsers().size());
+        System.out.println("Total Customers: " + getUsers().size());
     }
 
-    public static ArrayList<Flight> getFlightsFromHashMap(HashMap<Date, ArrayList<Flight>> getFlights){
+    public static ArrayList<Flight> getFlightsFromHashMap(){
         ArrayList<Flight> arrayFlights = new ArrayList<>();
-        Map<Date, ArrayList<Flight>> map = getFlights;
         int i = 0;
 
-        for (Map.Entry<Date, ArrayList<Flight>> entry : map.entrySet()) {  //Recorre el HashMap
-            arrayFlights.add(entry.getValue().get(i));
-            i++;
+        for (ArrayList<Flight> flight : flights.values()) {
+            for(i = 0; i < flight.size(); i++)
+                arrayFlights.add(flight.get(i));
         }
         return arrayFlights;
     }
@@ -178,7 +180,7 @@ public abstract class Storage {
 
     public static ArrayList<Plane> getMaxPlane(int maxPassengers){
     ArrayList<Plane> planeListAvailable = new ArrayList<>();
-        for (Plane plane: Storage.getPlanes()) {
+        for (Plane plane: planes) {
             if(plane.getPassengers() >= maxPassengers){
                 planeListAvailable.add(plane);
             }

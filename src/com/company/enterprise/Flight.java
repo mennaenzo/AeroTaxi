@@ -9,24 +9,17 @@ public class Flight {
     private Date date;
     private Journey journey;
     private Plane plane;
-    private User user;
+    private String user;
     private int passengers;
     private double cost;
 
-    public Flight(Date date, Journey journey, Plane plane, User user, int passengers, double cost) {
+    public Flight(Date date, Journey journey, Plane plane, String user, int passengers, double cost) {
         this.date = date;
         this.journey = journey;
         this.plane = plane;
         this.user = user;
         this.passengers = passengers;
         this.cost = cost;
-    }
-
-    public Flight(Date date, Journey journey, User user, int passengers) {
-        this.date = date;
-        this.journey = journey;
-        this.user = user;
-        this.passengers = passengers;
     }
 
     public Date getDate() {
@@ -53,12 +46,8 @@ public class Flight {
         this.plane = plane;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public int getPassengers() {

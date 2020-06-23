@@ -88,8 +88,10 @@ public class FileUser extends Storage {
 
     public static ArrayList<User> createDataUser(String pathname) {
         ArrayList<User> listSave = new ArrayList<>();
+        User admin = new User("Admin", "", 0, 0);
         User enzo = new User("Enzo", "Menna", 39341231, 26);
         User martin = new User("Martin", "Gomez Vega", 41429427, 21);
+        listSave.add(admin);
         listSave.add(enzo);
         listSave.add(martin);
         FileUser.writeFileUser(listSave, pathname);

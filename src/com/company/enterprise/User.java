@@ -94,4 +94,17 @@ public class User {
             System.out.println(i + " - " + flight.toString());
         }
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", dni=" + dni +
+                ", age=" + age +
+                ", bestCategory='" + bestCategory + '\'' +
+                ", checkIn=" + checkIn +
+                ", trips=" + trips +
+                '}';
+    }
 }

@@ -7,15 +7,9 @@ import com.company.fileManagement.FileFlight;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
 
-import javax.swing.plaf.synth.SynthRootPaneUI;
-import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static com.company.fileManagement.Storage.setFlights;
 
 public class SystemAero {
 
@@ -25,37 +19,42 @@ public class SystemAero {
     public void menu(){
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
+        boolean userOption = false;
         int option;
         setUp();
         while(!exit) {
-            System.out.println("\t0 - Administrator");
             System.out.println("- Users -");
             User user = Storage.selectUser();
-            if (user != null) {
-                System.out.println("- AeroTaxi Menu -" + " (User: " + user.getName() + ")");
-                System.out.println("\t1 - Reserve Flight");
-                System.out.println("\t2 - Cancel Flight");
-//            System.out.println("\t3  All Flights");
-//            System.out.println("\t4 - All Users");
-                System.out.println("\t3 - Change User");
-                System.out.println("\t4 - Exit");
-                option = scanner.nextInt();
-                switch (option) {
-                    case 0:
-                        viewAdministrator();
-                    case 1:
-                        reserve(user);
-                        break;
-                    case 2:
-                        UserMenu.cancelFlight(user);
-                    case 3:
-                        break;
-                    case 4:
-                        // Escritura de archivos
-                        exit = true;
-                        break;
-                    default:
-                        System.out.println("Please select a number between 1 and 5.");
+            if (user != null){
+                userOption = false;
+                while(!userOption) {
+                    if (!user.getName().equals("Admin")) {
+                        System.out.println("- AeroTaxi Menu -" + " (User: " + user.getName() + ")");
+                        System.out.println("\t1 - Reserve Flight");
+                        System.out.println("\t2 - Cancel Flight");
+                        System.out.println("\t3 - Change User");
+                        System.out.println("\t4 - Exit");
+                        option = scanner.nextInt();
+                        switch (option) {
+                            case 1:
+                                reserve(user);
+                                break;
+                            case 2:
+                                UserMenu.cancelFlight(user);
+                            case 3:
+                                userOption = true;
+                                break;
+                            case 4:
+                                userOption = true;
+                                exit = true;
+                                break;
+                            default:
+                                System.out.println("Please select a number between 1 and 5.");
+                        }
+                    } else {
+                        admin(user);
+                        userOption = true;
+                    }
                 }
             }
             else
@@ -63,33 +62,59 @@ public class SystemAero {
         }
     }
 
-    private void viewAdministrator(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\t1 - Client list ");
-        System.out.println("\t2 - View Flights on a date ");
-        int option = scanner.nextInt();
-        switch (option){
-            case 1:
-               Storage.printUsers();
-            case 2:
-                System.out.println("Please enter the date to see the flights:");
-                Date date = checkDate(scanner.nextLine());
-                Storage.getListFlghtByDate(date);
+    private void admin(User user){
+        System.out.println("Password: ");
+        Scanner scanner1 = new Scanner(System.in);
+        String password = scanner1.nextLine();
+        if(password.equals("1234")) {
+            int option;
+            boolean exit = false;
+            while (!exit) {
+                System.out.println("- AeroTaxi Menu -" + " (User: " + user.getName() + ")");
+                System.out.println("\t1 - Client list ");
+                System.out.println("\t2 - View Flights on a date ");
+                System.out.println("\t3 - Change User");
+                Scanner scanner = new Scanner(System.in);
+                option = scanner.nextInt();
+                switch (option) {
+                    case 1:
+                        System.out.println("-----------------------------------");
+                        Storage.printUsers();
+                        System.out.println("-----------------------------------");
+                        break;
+                    case 2:
+                        System.out.println("Please enter the date to see the flights (DD/MM/YY):");
+                        Scanner scannerDate = new Scanner(System.in);
+                        Date date = checkDate(scannerDate.nextLine());
+                        if (Storage.getListFlightByDate(date) != null) {
+                            Storage.listFlights(Storage.getListFlightByDate(date));
+                        } else
+                            System.out.println("There are no flights on that date.");
+                        break;
+                    case 3:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Please select a number between 1 and 3.");
+                        break;
+                }
+            }
         }
+        else
+            System.out.println("Wrong password.");
     }
-
-
 
     private void reserve(User user){
         Flight newFlight = checkIn(user);
         if(newFlight != null) {
+            ArrayList<Flight> newFlights = new ArrayList<>();
             if(Storage.getFlights().containsKey(newFlight.getDate()))
                 Storage.addFlight(newFlight, Storage.getFlights().get(newFlight.getDate()));
             else {
                 Storage.addFlight(newFlight);
-                ArrayList<Flight> flightArray = Storage.getFlightsFromHashMap(Storage.getFlights());
-                FileFlight.writeFileFlight(flightArray,FilePath.FLIGHTS.getPathname());  // Escribiria cada vez que hago una reserva
-        }
+            }
+            newFlights.add(newFlight);
+            FileFlight.writeFileFlight(newFlights, FilePath.FLIGHTS.getPathname());
         }
         else
             System.out.println("The flight was canceled.");
@@ -123,7 +148,7 @@ public class SystemAero {
                 int companions = scanner.nextInt();
                 int maxPassenger = getMax(date);
                 if(companions+1 <= maxPassenger){
-                    Plane plane = planeAvailable(date, maxPassenger);
+                    Plane plane = planeAvailable(date, companions+1);
                     System.out.println("Cost $" + UserMenu.getCost(journey,plane,companions+1) + " - Plane " + plane.getModel() + ": ");
                     System.out.println("1 - Accept");
                     System.out.println("2 - Cancel");
@@ -152,7 +177,7 @@ public class SystemAero {
         return null;
     }
 
-    private  Date checkDate(String scannerDate){
+    private Date checkDate(String scannerDate){
         SimpleDateFormat simpleDate = new SimpleDateFormat();
         Date date = new Date();
 
@@ -161,7 +186,6 @@ public class SystemAero {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return date;
     }
 
@@ -294,17 +318,17 @@ public class SystemAero {
         return 0;
     }
 
-    public Plane planeAvailable(Date date, int maxPassengers){
+    public Plane planeAvailable(Date date, int companions){
         ArrayList<Plane> listPlaneAvailable;
         if(!Storage.getFlights().isEmpty()) {
             if (Storage.getFlights().containsKey(date)) {
-                //listPlaneAvailable = fligths.get(date);
-                //return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
-                }
+                listPlaneAvailable = Storage.getPlanes();
+                return choosePlanesAvailable(listPlaneAvailable,companions);
             }
+        }
         else{
-            listPlaneAvailable = Storage.getMaxPlane(maxPassengers);
-            return choosePlanesAvailable(listPlaneAvailable,maxPassengers);
+            listPlaneAvailable = Storage.getMaxPlane(companions);
+            return choosePlanesAvailable(listPlaneAvailable,companions);
         }
         return null;
     }
@@ -312,13 +336,12 @@ public class SystemAero {
     public Plane choosePlanesAvailable(ArrayList<Plane> listPlane, int maxPassengers){
         int i = 1;
         for (Plane plane : listPlane) {
-            if(plane.getPassengers() <= maxPassengers){
-                System.out.println("Opcion: " + i);
-                i++;
-                System.out.println(plane.toString());
-                System.out.println("\n");
-            }
+            System.out.println("Opcion: " + i);
+            i++;
+            System.out.println(plane.toString());
+            System.out.println("\n");
         }
+
         System.out.println("Please choose the plane where you want to travel:");
         Scanner scanner = new Scanner(System.in);
         int option = scanner.nextInt();

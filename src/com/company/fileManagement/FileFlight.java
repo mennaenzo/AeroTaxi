@@ -52,7 +52,7 @@ public class FileFlight extends Storage{
                 Gson gson = new Gson();
                 // String planes = gson.toJson(FilePath.PLANES.getPathname());
                 Type typeArrayFlights = new TypeToken<ArrayList<Flight>>() {}.getType(); // Se hace una referencia del tipo de dato, en este caso un ArrayList.
-                list = gson.fromJson(bReader, (Type) Flight.class); // list almacena un ArrayList con a informacion del archivo.
+                list = gson.fromJson(bReader, typeArrayFlights); // list almacena un ArrayList con a informacion del archivo.
                 System.out.println("La operacion de lectura se realizo correctamente.");
 
             } catch (IOException e) {
