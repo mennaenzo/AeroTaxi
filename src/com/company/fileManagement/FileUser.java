@@ -86,7 +86,7 @@ public class FileUser extends Storage {
         return list; // Devuelve el contenido del archivo
     }
 
-    public static ArrayList<User> createDataUser(String pathname) {
+    public static ArrayList<User> createDataUser() {
         ArrayList<User> listSave = new ArrayList<>();
         User admin = new User("Admin", "", 0, 0);
         User enzo = new User("Enzo", "Menna", 39341231, 26);
@@ -94,12 +94,11 @@ public class FileUser extends Storage {
         listSave.add(admin);
         listSave.add(enzo);
         listSave.add(martin);
-        FileUser.writeFileUser(listSave, pathname);
         return listSave;
     }
 
     public boolean checkData(ArrayList<User> userList) {
-        ArrayList<User> firsList = FileUser.createDataUser(FilePath.USERS.getPathname());
+        ArrayList<User> firsList = FileUser.createDataUser();
         for (User user : userList) {
             for (User userCompare : firsList) {
                 if (user.getName().equals(userCompare.getName()) && user.getSurname().equals(userCompare.getSurname())) {
@@ -111,9 +110,6 @@ public class FileUser extends Storage {
         }
         return false;
     }
-
-
-
 
         @Override
     public boolean createFile(String pathname) {

@@ -4,7 +4,10 @@ import com.company.enterprise.Flight;
 import com.company.enterprise.SystemAero;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
+import com.company.enums.Journey;
 import com.company.planes.Plane;
+import com.sun.xml.internal.ws.binding.FeatureListUtil;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -114,39 +117,57 @@ public abstract class Storage {
     public static void firstData() {
         File filePlane = new File(FilePath.PLANES.getPathname());
         if (filePlane.exists()) {
-            planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+            if(checkPlane(FilePlane.readFilePlane(FilePath.PLANES.getPathname()), FilePlane.createDataPlane())) {
+                planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
+            }
+            else{
+                System.out.println("The file is corrupt");
+            }
         } else {
             FilePlane filePlane1 = new FilePlane();
             filePlane1.createFile(FilePath.PLANES.getPathname());
-            setPlanes(FilePlane.createDataPlane(FilePath.PLANES.getPathname()));
+            setPlanes(FilePlane.createDataPlane());
         }
 
         File fileUser = new File(FilePath.USERS.getPathname());
-        if (fileUser.exists())
-            users = FileUser.readFileUser(FilePath.USERS.getPathname());
+        if (fileUser.exists()){
+            if(checkuUser(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
+                users = FileUser.readFileUser(FilePath.USERS.getPathname());
+            }
+            else{
+                System.out.println("The file is corrupt");
+            }
+        }
         else {
             FileUser fileUser1 = new FileUser();
             fileUser1.createFile(FilePath.USERS.getPathname());
-            setUsers(FileUser.createDataUser(FilePath.USERS.getPathname()));
+            setUsers(FileUser.createDataUser());
         }
 
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
         if (fileFlights.exists()) {
-            if (FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname()).size() > 0) {
-                for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
-                    if (flights.containsKey(flight.getDate())) {
-                        addFlight(flight, flights.get(flight.getDate()));
-                    } else {
-                        addFlight(flight);
+            if((checkFlight(FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())))){
+                if (FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname()).size() > 0) {
+                    for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
+                        if (flights.containsKey(flight.getDate())) {
+                            addFlight(flight, flights.get(flight.getDate()));
+                        } else {
+                            addFlight(flight);
+                        }
                     }
                 }
             }
+            else{
+                System.out.println("The file is corrupt");
+            }
+
         }
         else {
             FileFlight fileFlight1 = new FileFlight();
             fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
         }
     }
+
 
     public static void printUsers(){
         System.out.println("- Clients -");
@@ -195,5 +216,76 @@ public abstract class Storage {
             }
         }
         return planesAvailable;
+    }
+
+    public static boolean checkPlane(ArrayList<Plane> planesFromFile, ArrayList<Plane> planesOriginal){
+        if(planesFromFile.size() > 0){
+            for (Plane plane: planesFromFile) {
+                for (Plane planeOriginal: planesOriginal) {
+                    if(plane.getModel().equals(planeOriginal.getModel())){
+                        if(plane.getFuel() == planeOriginal.getFuel()){
+                            if(plane.getPricePerKm() == planeOriginal.getPricePerKm()){
+                                if(plane.getSpeed() == planeOriginal.getSpeed()){
+                                    if(plane.getPropulsion().equals(planeOriginal.getPropulsion())){
+                                        if(plane.getPassengers() == planeOriginal.getPassengers()){
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkFlight(ArrayList<Flight> flightFromFile){
+        if(flightFromFile.size() > 0){
+            for (Flight flight: flightFromFile) {
+                    if(flight.getDate() instanceof Date){
+                        if(flight.getPlane() instanceof Plane){
+                            if(flight.getJourney() instanceof Journey) {
+                                if(flight.getPassengers() == (int) flight.getPassengers() ) {
+                                    if(flight.getCost() == (double) flight.getCost()){
+                                        if(flight.getUser().equals(flight.getUser())){
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        return false;
+    }
+
+    public static boolean checkuUser(ArrayList<User> usersFromFile, ArrayList<User> usersOriginal) {
+        if (usersFromFile.size() > 0) {
+            for (User user : usersFromFile) {
+                for (User userOriginal : usersFromFile) {
+                    if (user.getDni() == userOriginal.getDni()) {
+                        if (user.getSurname().equals(userOriginal.getSurname())) {
+                            if (user.getName().equals(userOriginal.getName())) {
+                                if (user.getAge() == userOriginal.getAge()) {
+                                    if (user.getCheckIn().equals(userOriginal.getCheckIn())) {
+                                        if (user.getBestCategory().equals(userOriginal.getBestCategory())) {
+                                            if (user.getTrips().equals(userOriginal.getTrips())) {
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        return false;
     }
 }

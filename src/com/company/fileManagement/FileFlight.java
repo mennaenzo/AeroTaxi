@@ -39,9 +39,7 @@ public class FileFlight extends Storage{
             }
         }
     }
-
     // A partir de una ruta, lee un archivo.
-
     public static ArrayList<Flight> readFileFlight(String pathname) {
         ArrayList<Flight> list = new ArrayList<>();
         BufferedReader bReader = null;
