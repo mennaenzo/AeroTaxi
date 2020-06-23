@@ -1,7 +1,6 @@
 package com.company.fileManagement;
 
 import com.company.enterprise.Flight;
-import com.company.enterprise.SystemAero;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
 import com.company.enums.Journey;
@@ -40,16 +39,19 @@ public abstract class Storage {
     public static void addFlight(Flight flight) {
         ArrayList<Flight> flightsHash = new ArrayList<>();
         flightsHash.add(flight);
-        flights.put(flight.getDate(), flightsHash);
-    }
-
-    public static ArrayList<Flight> getListFlightByDate(Date date) {
-        return flights.get(date);
+        flights.put(formatDate(flight.getDate()), flightsHash);
     }
 
     public static void addFlight(Flight flight, ArrayList<Flight> flightsHash) {
         flightsHash.add(flight);
-        flights.put(flight.getDate(), flightsHash);
+        flights.put(formatDate(flight.getDate()), flightsHash);
+    }
+
+    public static Date formatDate(Date date){
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        return date;
     }
 
     public Storage() {
@@ -186,6 +188,14 @@ public abstract class Storage {
                 arrayFlights.add(flight.get(i));
         }
         return arrayFlights;
+    }
+
+    public static ArrayList<Plane> getPlanesByDate(Date date){
+        ArrayList<Plane> planes = new ArrayList<>();
+        for (Flight flight : flights.get(date)){
+            planes.add(flight.getPlane());
+        }
+        return planes;
     }
 
     public static int getMaxPassengers(){

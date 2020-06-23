@@ -86,8 +86,8 @@ public class SystemAero {
                         System.out.println("Please enter the date to see the flights (DD/MM/YY):");
                         Scanner scannerDate = new Scanner(System.in);
                         Date date = checkDate(scannerDate.nextLine());
-                        if (Storage.getListFlightByDate(date) != null) {
-                            Storage.listFlights(Storage.getListFlightByDate(date));
+                        if (Storage.getFlights().get(date) != null) {
+                            Storage.listFlights(Storage.getFlights().get(date));
                         } else
                             System.out.println("There are no flights on that date.");
                         break;
@@ -107,14 +107,12 @@ public class SystemAero {
     private void reserve(User user){
         Flight newFlight = checkIn(user);
         if(newFlight != null) {
-            ArrayList<Flight> newFlights = new ArrayList<>();
-            if(Storage.getFlights().containsKey(newFlight.getDate()))
+            if(Storage.getFlights().containsKey(Storage.formatDate(newFlight.getDate())))
                 Storage.addFlight(newFlight, Storage.getFlights().get(newFlight.getDate()));
             else {
                 Storage.addFlight(newFlight);
             }
-            newFlights.add(newFlight);
-            FileFlight.writeFileFlight(newFlights, FilePath.FLIGHTS.getPathname());
+            FileFlight.writeFileFlight(Storage.getFlightsFromHashMap(), FilePath.FLIGHTS.getPathname());
         }
         else
             System.out.println("The flight was canceled.");
@@ -149,10 +147,14 @@ public class SystemAero {
                 int maxPassenger = getMax(date);
                 if(companions+1 <= maxPassenger){
                     Plane plane = planeAvailable(date, companions+1);
-                    System.out.println("Cost $" + UserMenu.getCost(journey,plane,companions+1) + " - Plane " + plane.getModel() + ": ");
-                    System.out.println("1 - Accept");
-                    System.out.println("2 - Cancel");
-                    return validateDecision(scanner,journey,plane,companions,date,user);
+                    if(plane != null) {
+                        System.out.println("Cost $" + UserMenu.getCost(journey, plane, companions + 1) + " - Plane " + plane.getModel() + ": ");
+                        System.out.println("1 - Accept");
+                        System.out.println("2 - Cancel");
+                        return validateDecision(scanner, journey, plane, companions, date, user);
+                    }
+                    else
+                        System.out.println("All planes are occupied on that date.");
                 }
                 else
                     System.out.println("We don't have planes available for that passenger capacity.");
@@ -169,8 +171,7 @@ public class SystemAero {
         }
         switch (decision) {
             case 1:
-                UserMenu.getCost(journey, plane, companions + 1);
-                return UserMenu.confirmFligth(date, journey, plane, user, companions + 1);
+                return UserMenu.confirmFlight(date, journey, plane, user, companions + 1);
             case 2:
                 return null;
         }
@@ -321,19 +322,26 @@ public class SystemAero {
     public Plane planeAvailable(Date date, int companions){
         ArrayList<Plane> listPlaneAvailable;
         if(!Storage.getFlights().isEmpty()) {
-            if (Storage.getFlights().containsKey(date)) {
-                listPlaneAvailable = Storage.getPlanes();
-                return choosePlanesAvailable(listPlaneAvailable,companions);
+            if (Storage.getFlights().containsKey(Storage.formatDate(date))) {
+                listPlaneAvailable = deleteRepeated(Storage.getPlanesByDate(Storage.formatDate(date)));
+                return choosePlanesAvailable(listPlaneAvailable);
             }
         }
-        else{
-            listPlaneAvailable = Storage.getMaxPlane(companions);
-            return choosePlanesAvailable(listPlaneAvailable,companions);
-        }
-        return null;
+        listPlaneAvailable = Storage.getMaxPlane(companions);
+        return choosePlanesAvailable(listPlaneAvailable);
     }
 
-    public Plane choosePlanesAvailable(ArrayList<Plane> listPlane, int maxPassengers){
+    private ArrayList<Plane> deleteRepeated(ArrayList<Plane> planes){
+        ArrayList<Plane> noRepeated = new ArrayList<>();
+        for (Plane plane: Storage.getPlanes()) {
+            if(!planes.contains(plane)){
+                noRepeated.add(plane);
+            }
+        }
+        return noRepeated;
+    }
+
+    public Plane choosePlanesAvailable(ArrayList<Plane> listPlane){
         int i = 1;
         for (Plane plane : listPlane) {
             System.out.println("Opcion: " + i);
@@ -365,26 +373,18 @@ public class SystemAero {
     public int getMax(Date date) {
         int max = 0;
         if(!Storage.getFlights().isEmpty()) {
-            if (!Storage.getFlights().containsKey(date)) {
-                ArrayList<Plane> planes = Storage.getPlanes();
-                for (Plane plane : planes) {
-                    if (plane.getPassengers() > max)
-                        max = plane.getPassengers();
-                }
-            } else {
+            if (Storage.getFlights().containsKey(Storage.formatDate(date))) {
                 ArrayList<Plane> planesHash = new ArrayList<>();
-                for (Flight flight : Storage.getFlights().get(date)) {
+                for (Flight flight : Storage.getFlights().get(Storage.formatDate(date))) {
                     planesHash.add(flight.getPlane());
                 }
                 for (Plane planeAvailable : Storage.planesAvailable(planesHash)) {
                     if (planeAvailable.getPassengers() > max)
                         max = planeAvailable.getPassengers();
                 }
+                return max;
             }
         }
-        else{
-            return Storage.getMaxPassengers();
-        }
-        return max;
+        return Storage.getMaxPassengers();
     }
 }
