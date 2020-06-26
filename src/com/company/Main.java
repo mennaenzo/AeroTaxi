@@ -5,7 +5,7 @@ public class Main {
 
     public static void main(String[] args) {
         SystemAero system = new SystemAero();
-        system.menu();
+        system.setUp();
 
 /*
         Date today = new Date();

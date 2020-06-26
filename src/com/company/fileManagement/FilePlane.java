@@ -81,9 +81,8 @@ public class FilePlane extends Storage {
             try {
                 bReader = new BufferedReader(new FileReader(new File(pathname)));
                 Gson gson = new Gson();
-                // String planes = gson.toJson(FilePath.PLANES.getPathname());
                 Type typeArrayPlanes = new TypeToken<ArrayList<ArrayList<Plane>>>() {}.getType(); // Se hace una referencia del tipo de dato, en este caso un ArrayList.
-                list = gson.fromJson(bReader, typeArrayPlanes); // list almacena un ArrayList con a informacion del archivo.
+                list = gson.fromJson(bReader, typeArrayPlanes);
                 for (int i = 0; i < list.size(); i++) {
                     for (int j = 0; j< list.get(i).size(); j++) {
                         Plane plane = (list.get(i).get(j));
@@ -102,7 +101,7 @@ public class FilePlane extends Storage {
                     }
                 }
                 System.out.println("La operacion de lectura se realizo correctamente.");
-            } catch (IOException e) {
+            } catch (IOException | NumberFormatException e) {
                 System.out.println("Se produjo el siguiente error al leer el archivo: " + e.getMessage());
             } finally {
                 try {

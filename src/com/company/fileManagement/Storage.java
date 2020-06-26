@@ -3,7 +3,6 @@ package com.company.fileManagement;
 import com.company.enterprise.Flight;
 import com.company.enterprise.User;
 import com.company.enums.FilePath;
-import com.company.enums.Journey;
 import com.company.planes.Plane;
 
 import java.io.BufferedWriter;
@@ -17,22 +16,10 @@ public abstract class Storage {
     private static ArrayList<User> users = new ArrayList<>();
     private static HashMap<Date, ArrayList<Flight>> flights = new HashMap<>();
 
-    public static void setPlanes(ArrayList<Plane> planes) {
-        Storage.planes = planes;
-    }
-
-    public static void setUsers(ArrayList<User> users) {
-        Storage.users = users;
-    }
-
     public static void listFlights(ArrayList<Flight> listFlightByDate) {
         for (Flight flight : listFlightByDate) {
             System.out.println(flight.toString());
         }
-    }
-
-    public void SaveFlightsInFile() {
-        //FileFlight.writeFileFlight();
     }
 
     public static void addFlight(Flight flight) {
@@ -54,10 +41,6 @@ public abstract class Storage {
     }
 
     public Storage() {
-    }
-
-    public static void setFlights(HashMap<Date, ArrayList<Flight>> flights) {
-        Storage.flights = flights;
     }
 
     public static ArrayList<Plane> getPlanes() {
@@ -115,39 +98,41 @@ public abstract class Storage {
         }
     }
 
-    public static void firstData() {
+    public static boolean firstData() {
         File filePlane = new File(FilePath.PLANES.getPathname());
         if (filePlane.exists()) {
-            if(checkPlane(FilePlane.readFilePlane(FilePath.PLANES.getPathname()), FilePlane.createDataPlane())) {
-                planes = FilePlane.readFilePlane(FilePath.PLANES.getPathname());
-            }
-            else{
-                System.out.println("The file is corrupt");
+            if (checkPlanes(FilePlane.readFilePlane(FilePath.PLANES.getPathname()), FilePlane.createDataPlane())) {
+                planes = FilePlane.createDataPlane();
+            } else {
+                System.out.println("ERROR: The file is corrupt");
+                return false;
             }
         } else {
             FilePlane filePlane1 = new FilePlane();
             filePlane1.createFile(FilePath.PLANES.getPathname());
-            setPlanes(FilePlane.createDataPlane());
+            planes = FilePlane.createDataPlane();
         }
 
         File fileUser = new File(FilePath.USERS.getPathname());
         if (fileUser.exists()){
-            if(checkuUser(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
+            /*if(checkUser(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
                 users = FileUser.readFileUser(FilePath.USERS.getPathname());
             }
             else{
                 System.out.println("The file is corrupt");
-            }
+
+             */
+            users = FileUser.readFileUser(FilePath.USERS.getPathname());
         }
         else {
             FileUser fileUser1 = new FileUser();
             fileUser1.createFile(FilePath.USERS.getPathname());
-            setUsers(FileUser.createDataUser());
+            users = FileUser.createDataUser();
         }
 
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
         if (fileFlights.exists()) {
-            if((checkFlight(FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())))){
+            /*if((checkFlight(FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())))){
                 if (FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname()).size() > 0) {
                     for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
                         if (flights.containsKey(flight.getDate())) {
@@ -161,12 +146,21 @@ public abstract class Storage {
             else{
                 System.out.println("The file is corrupt");
             }
-
+             */
+            for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
+                if (flights.containsKey(flight.getDate())) {
+                    addFlight(flight, flights.get(flight.getDate()));
+                } else {
+                    addFlight(flight);
+                }
+            }
         }
         else {
             FileFlight fileFlight1 = new FileFlight();
             fileFlight1.createFile(FilePath.FLIGHTS.getPathname());
         }
+
+        return true;
     }
 
 
@@ -207,7 +201,7 @@ public abstract class Storage {
         return max;
     }
 
-    public static ArrayList<Plane> getMaxPlane(int maxPassengers){
+    public static ArrayList<Plane> getMaxPlanes(int maxPassengers){
     ArrayList<Plane> planeListAvailable = new ArrayList<>();
         for (Plane plane: planes) {
             if(plane.getPassengers() >= maxPassengers){
@@ -227,52 +221,25 @@ public abstract class Storage {
         return planesAvailable;
     }
 
-    public static boolean checkPlane(ArrayList<Plane> planesFromFile, ArrayList<Plane> planesOriginal){
-        if(planesFromFile.size() > 0){
-            for (Plane plane: planesFromFile) {
-                for (Plane planeOriginal: planesOriginal) {
-                    if(plane.getModel().equals(planeOriginal.getModel())){
-                        if(plane.getFuel() == planeOriginal.getFuel()){
-                            if(plane.getPricePerKm() == planeOriginal.getPricePerKm()){
-                                if(plane.getSpeed() == planeOriginal.getSpeed()){
-                                    if(plane.getPropulsion().equals(planeOriginal.getPropulsion())){
-                                        if(plane.getPassengers() == planeOriginal.getPassengers()){
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
+    public static boolean checkPlanes(ArrayList<Plane> planesFromFile, ArrayList<Plane> planesOriginal) {
+        for (Plane plane : planesFromFile) {
+            if (!planesOriginal.contains(plane)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public static boolean checkFlight(ArrayList<Flight> flightFromFile){
-        if(flightFromFile.size() > 0){
-            for (Flight flight: flightFromFile) {
-                    if(flight.getDate() instanceof Date){
-                        if(flight.getPlane() instanceof Plane){
-                            if(flight.getJourney() instanceof Journey) {
-                                if(flight.getPassengers() == (int) flight.getPassengers() ) {
-                                    if(flight.getCost() == (double) flight.getCost()){
-                                        if(flight.getUser().equals(flight.getUser())){
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    public static boolean checkFlight(ArrayList<Flight> flightFromFile) {
+        if (flightFromFile.size() > 0) {
+            for (Flight flight : flightFromFile) {
+                return false;
             }
-        return false;
+        }
+        return true;
     }
 
-    public static boolean checkuUser(ArrayList<User> usersFromFile, ArrayList<User> usersOriginal) {
+   /* public static boolean checkUser(ArrayList<User> usersFromFile, ArrayList<User> usersOriginal) {
         if (usersFromFile.size() > 0) {
             for (User user : usersFromFile) {
                 for (User userOriginal : usersFromFile) {
@@ -291,10 +258,10 @@ public abstract class Storage {
                             }
                         }
                     }
-
                 }
             }
         }
         return false;
     }
+    */
 }

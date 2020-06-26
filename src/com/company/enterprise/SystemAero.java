@@ -21,7 +21,6 @@ public class SystemAero {
         boolean exit = false;
         boolean userOption = false;
         int option;
-        setUp();
         while(!exit) {
             System.out.println("- Users -");
             User user = Storage.selectUser();
@@ -119,7 +118,11 @@ public class SystemAero {
     }
 
     public void setUp() {
-        Storage.firstData();
+        if(!Storage.firstData()){
+            System.out.println("ERROR: Problem with files");
+        }
+        else
+            menu();
     }
 
     private Flight checkIn(User user){
@@ -327,7 +330,7 @@ public class SystemAero {
                 return choosePlanesAvailable(listPlaneAvailable);
             }
         }
-        listPlaneAvailable = Storage.getMaxPlane(companions);
+        listPlaneAvailable = Storage.getMaxPlanes(companions);
         return choosePlanesAvailable(listPlaneAvailable);
     }
 
