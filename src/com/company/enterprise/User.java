@@ -1,6 +1,7 @@
 package com.company.enterprise;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class User {
     private String name;
@@ -106,5 +107,34 @@ public class User {
                 ", checkIn=" + checkIn +
                 ", trips=" + trips +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        if(getBestCategory() == null) {
+            return getDni() == user.getDni() &&
+                    getAge() == user.getAge() &&
+                    getName().equals(user.getName()) &&
+                    getSurname().equals(user.getSurname()) &&
+                    getCheckIn().equals(user.getCheckIn()) &&
+                    getTrips().equals(user.getTrips());
+        }
+        else{
+            return getDni() == user.getDni() &&
+                    getAge() == user.getAge() &&
+                    getName().equals(user.getName()) &&
+                    getSurname().equals(user.getSurname()) &&
+                    getCheckIn().equals(user.getCheckIn()) &&
+                    getBestCategory().equals(user.getBestCategory()) &&
+                    getTrips().equals(user.getTrips());
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSurname(), getDni(), getAge(), getBestCategory(), getCheckIn(), getTrips());
     }
 }

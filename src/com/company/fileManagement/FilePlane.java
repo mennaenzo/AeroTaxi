@@ -20,15 +20,6 @@ public class FilePlane extends Storage {
     public FilePlane() {
     }
 
-  /*public static boolean checkPlaneInfile(ArrayList<Plane> completeList, Plane xSave){
-            for (Plane plane: completeList) {
-                if(plane.getIdPlane() == xSave.getIdPlane()){
-                    return true;
-                }
-            }
-        return false;
-    }*/
-
     // Escribe en un archivo un ArrayList
     public static void writeFilePlane(ArrayList<Plane> xSave, String pathname) {
         ArrayList<ArrayList<Plane>> completeList = new ArrayList<>();

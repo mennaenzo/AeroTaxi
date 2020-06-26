@@ -104,7 +104,7 @@ public abstract class Storage {
             if (checkPlanes(FilePlane.readFilePlane(FilePath.PLANES.getPathname()), FilePlane.createDataPlane())) {
                 planes = FilePlane.createDataPlane();
             } else {
-                System.out.println("ERROR: The file is corrupt");
+                System.out.println("ERROR: The file Plane is corrupt");
                 return false;
             }
         } else {
@@ -115,14 +115,13 @@ public abstract class Storage {
 
         File fileUser = new File(FilePath.USERS.getPathname());
         if (fileUser.exists()){
-            /*if(checkUser(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
+            if(checkUsers(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
                 users = FileUser.readFileUser(FilePath.USERS.getPathname());
             }
-            else{
-                System.out.println("The file is corrupt");
-
-             */
-            users = FileUser.readFileUser(FilePath.USERS.getPathname());
+            else {
+                System.out.println("ERROR: The file Users is corrupt");
+                return false;
+            }
         }
         else {
             FileUser fileUser1 = new FileUser();
@@ -230,38 +229,12 @@ public abstract class Storage {
         return true;
     }
 
-    public static boolean checkFlight(ArrayList<Flight> flightFromFile) {
-        if (flightFromFile.size() > 0) {
-            for (Flight flight : flightFromFile) {
+    public static boolean checkUsers(ArrayList<User> usersFromFile, ArrayList<User> usersOriginal) {
+        for (User user : usersFromFile) {
+            if (!usersOriginal.contains(user)) {
                 return false;
             }
         }
         return true;
     }
-
-   /* public static boolean checkUser(ArrayList<User> usersFromFile, ArrayList<User> usersOriginal) {
-        if (usersFromFile.size() > 0) {
-            for (User user : usersFromFile) {
-                for (User userOriginal : usersFromFile) {
-                    if (user.getDni() == userOriginal.getDni()) {
-                        if (user.getSurname().equals(userOriginal.getSurname())) {
-                            if (user.getName().equals(userOriginal.getName())) {
-                                if (user.getAge() == userOriginal.getAge()) {
-                                    if (user.getCheckIn().equals(userOriginal.getCheckIn())) {
-                                        if (user.getBestCategory().equals(userOriginal.getBestCategory())) {
-                                            if (user.getTrips().equals(userOriginal.getTrips())) {
-                                                return true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    */
 }
