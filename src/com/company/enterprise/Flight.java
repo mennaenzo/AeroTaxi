@@ -4,6 +4,7 @@ import com.company.enums.Journey;
 import com.company.planes.Plane;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Flight {
     private Date date;
@@ -76,5 +77,23 @@ public class Flight {
                 ", passengers=" + passengers +
                 ", cost=" + cost +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Flight flight = (Flight) o;
+        return getPassengers() == flight.getPassengers() &&
+                Double.compare(flight.getCost(), getCost()) == 0 &&
+                getDate().equals(flight.getDate()) &&
+                getJourney() == flight.getJourney() &&
+                getPlane().equals(flight.getPlane()) &&
+                getUser().equals(flight.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDate(), getJourney(), getPlane(), getUser(), getPassengers(), getCost());
     }
 }

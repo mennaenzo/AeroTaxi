@@ -48,7 +48,7 @@ public class FilePlane extends Storage {
             bWriter = new BufferedWriter(fileWriter);
             Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Crea un gson con un diseño(de  lo que se imprime en consola) mas legible
             gson.toJson(completeList, completeList.getClass(), bWriter); // Escribe en el archivo
-            System.out.println("La operacion de escritura en el archivo " + pathname + " se realizo correctamente.");
+//            System.out.println("La operacion de escritura en el archivo " + pathname + " se realizo correctamente.");
         } catch (IOException e) {
             System.out.println("Se produjo el siguiente error al escribir el archivo:" + e.getMessage());
         } finally {
@@ -64,7 +64,7 @@ public class FilePlane extends Storage {
 
     // A partir de una ruta, lee un archivo.
     public static ArrayList<Plane> readFilePlane(String pathname) {
-        ArrayList<ArrayList<Plane>> list = new ArrayList<>();
+        ArrayList<ArrayList<Plane>> list;
         ArrayList<Plane> listCast = new ArrayList<>();
         BufferedReader bReader = null;
         File file = new File(pathname);
@@ -91,7 +91,7 @@ public class FilePlane extends Storage {
                         }
                     }
                 }
-                System.out.println("La operacion de lectura se realizo correctamente.");
+//                System.out.println("La operacion de lectura se realizo correctamente.");
             } catch (IOException | NumberFormatException e) {
                 System.out.println("Se produjo el siguiente error al leer el archivo: " + e.getMessage());
             } finally {

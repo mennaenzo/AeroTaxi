@@ -28,15 +28,16 @@ public class UserMenu {
         return flight;
     }
 
-    public static void cancelFlight(User user){
+    public static boolean cancelFlight(User user){
         if(!user.getCheckIn().isEmpty()){
             System.out.println("Choose the flight to cancel: ");
             user.listFlights();
             Scanner scanner = new Scanner(System.in);
             int option = scanner.nextInt();
-            if(option <= user.getCheckIn().size()+1){
+            if(option <= user.getCheckIn().size()){
                 if(inTime(user.getCheckIn().get(option-1))) {
                     user.getCheckIn().remove(option - 1);
+                    return true;
                 }
                 else
                     System.out.println("The flight cannot be canceled with less than 24 hours.");
@@ -47,26 +48,19 @@ public class UserMenu {
         }
         else
             System.out.println("You don't have flights.");
+        return false;
     }
 
     public static boolean inTime(Flight cancelFlight){
         Date today = new Date();
         Date flightTime = cancelFlight.getDate();
-        SimpleDateFormat simpleMinutes = new SimpleDateFormat("mm");
-        int minutes = Integer.parseInt(simpleMinutes.format(getDifferenceBetwenDates(today,flightTime)));
-        return minutes >= 1440;
+        return getDifferenceBetwenDates(today,flightTime);
     }
 
-    private static Date getDifferenceBetwenDates(Date hourToday, Date hourFlight) {
+    private static boolean getDifferenceBetwenDates(Date hourToday, Date hourFlight) {
         long milliseconds = hourFlight.getTime() - hourToday.getTime();
-        int seconds = (int) (milliseconds / 1000) % 60;
-        int minutes = (int) ((milliseconds / (1000 * 60)) % 60);
-        int hours = (int) ((milliseconds / (1000 * 60 * 60)) % 24);
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.SECOND, seconds);
-        c.set(Calendar.MINUTE, minutes);
-        c.set(Calendar.HOUR_OF_DAY, hours);
-        return c.getTime();
+        int day = (int) ((milliseconds / (1000 * 60 * 60 * 24)));
+        return day > 0;
     }
 
     public static double getCost(Journey journey, Plane plane, int passengers){

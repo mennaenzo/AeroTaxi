@@ -4,6 +4,7 @@ import com.company.enums.City;
 import com.company.enums.FilePath;
 import com.company.enums.Journey;
 import com.company.fileManagement.FileFlight;
+import com.company.fileManagement.FileUser;
 import com.company.fileManagement.Storage;
 import com.company.planes.Plane;
 
@@ -19,7 +20,7 @@ public class SystemAero {
     public void menu(){
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
-        boolean userOption = false;
+        boolean userOption;
         int option;
         while(!exit) {
             System.out.println("- Users -");
@@ -39,7 +40,9 @@ public class SystemAero {
                                 reserve(user);
                                 break;
                             case 2:
-                                UserMenu.cancelFlight(user);
+                                if(UserMenu.cancelFlight(user)){
+                                    FileUser.writeFileUser(Storage.getUsers(), FilePath.USERS.getPathname());
+                                }
                             case 3:
                                 userOption = true;
                                 break;
@@ -112,6 +115,7 @@ public class SystemAero {
                 Storage.addFlight(newFlight);
             }
             FileFlight.writeFileFlight(Storage.getFlightsFromHashMap(), FilePath.FLIGHTS.getPathname());
+            FileUser.writeFileUser(Storage.getUsers(), FilePath.USERS.getPathname());
         }
         else
             System.out.println("The flight was canceled.");

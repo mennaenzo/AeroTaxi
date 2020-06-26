@@ -93,6 +93,7 @@ public class User {
         int i = 1;
         for (Flight flight : checkIn) {
             System.out.println(i + " - " + flight.toString());
+            i++;
         }
     }
 

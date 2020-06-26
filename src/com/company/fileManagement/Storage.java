@@ -14,7 +14,7 @@ import java.util.*;
 public abstract class Storage {
     private static ArrayList<Plane> planes = new ArrayList<>();
     private static ArrayList<User> users = new ArrayList<>();
-    private static HashMap<Date, ArrayList<Flight>> flights = new HashMap<>();
+    private static final HashMap<Date, ArrayList<Flight>> flights = new HashMap<>();
 
     public static void listFlights(ArrayList<Flight> listFlightByDate) {
         for (Flight flight : listFlightByDate) {
@@ -111,41 +111,30 @@ public abstract class Storage {
             FilePlane filePlane1 = new FilePlane();
             filePlane1.createFile(FilePath.PLANES.getPathname());
             planes = FilePlane.createDataPlane();
+            FilePlane.writeFilePlane(planes, FilePath.PLANES.getPathname());
         }
 
         File fileUser = new File(FilePath.USERS.getPathname());
         if (fileUser.exists()){
-            if(checkUsers(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
+            /*if(checkUsers(FileUser.readFileUser(FilePath.USERS.getPathname()), FileUser.createDataUser())){
                 users = FileUser.readFileUser(FilePath.USERS.getPathname());
             }
             else {
                 System.out.println("ERROR: The file Users is corrupt");
                 return false;
             }
+            */
+            users = FileUser.readFileUser(FilePath.USERS.getPathname());
         }
         else {
             FileUser fileUser1 = new FileUser();
             fileUser1.createFile(FilePath.USERS.getPathname());
             users = FileUser.createDataUser();
+            FileUser.writeFileUser(users, FilePath.USERS.getPathname());
         }
 
         File fileFlights = new File(FilePath.FLIGHTS.getPathname());
         if (fileFlights.exists()) {
-            /*if((checkFlight(FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())))){
-                if (FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname()).size() > 0) {
-                    for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
-                        if (flights.containsKey(flight.getDate())) {
-                            addFlight(flight, flights.get(flight.getDate()));
-                        } else {
-                            addFlight(flight);
-                        }
-                    }
-                }
-            }
-            else{
-                System.out.println("The file is corrupt");
-            }
-             */
             for (Flight flight : FileFlight.readFileFlight(FilePath.FLIGHTS.getPathname())) {
                 if (flights.containsKey(flight.getDate())) {
                     addFlight(flight, flights.get(flight.getDate()));

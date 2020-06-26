@@ -1,7 +1,6 @@
 package com.company.fileManagement;
 
 import com.company.enterprise.Flight;
-import com.company.planes.Plane;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -9,9 +8,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FileFlight extends Storage{
 
@@ -25,8 +21,7 @@ public class FileFlight extends Storage{
             bWriter = new BufferedWriter(fileWriter);
             Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Crea un gson con un diseño(de  lo que se imprime en consola) mas legible
             gson.toJson(xSave, xSave.getClass(), bWriter); // Escribe en el archivo
-            //System.out.println("es   "+ gson.toJson(planeSave)); Devuelve un String de lo que hay se va a guardar en el archivo
-            System.out.println("La operacion de escritura se realizo correctamente.");
+//            System.out.println("La operacion de escritura se realizo correctamente.");
         } catch (IOException e) {
             System.out.println("Se produjo el siguiente error al escribir el archivo:" + e.getMessage());
         } finally {
@@ -48,12 +43,11 @@ public class FileFlight extends Storage{
             try {
                 bReader = new BufferedReader(new FileReader(new File(pathname)));
                 Gson gson = new Gson();
-                // String planes = gson.toJson(FilePath.PLANES.getPathname());
                 Type typeArrayFlights = new TypeToken<ArrayList<Flight>>() {}.getType(); // Se hace una referencia del tipo de dato, en este caso un ArrayList.
                 list = gson.fromJson(bReader, typeArrayFlights); // list almacena un ArrayList con a informacion del archivo.
-                System.out.println("La operacion de lectura se realizo correctamente.");
+//                System.out.println("La operacion de lectura se realizo correctamente.");
 
-            } catch (IOException e) {
+            } catch (IOException | NumberFormatException e) {
                 System.out.println("Se produjo el siguiente error al leer el archivo: " + e.getMessage());
             }
             finally {
